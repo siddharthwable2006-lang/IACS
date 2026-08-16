@@ -4773,3 +4773,25 @@ button {
 .chart-container {
     height: 220px;
 }
+height: 1000px;
+min-height: 800px;
+
+.chart {
+    height: 100vh;
+}
+
+canvas {
+    height: 100%;
+}
+
+
+.chart-container {
+    height: 220px;
+}
+
+.chart-container canvas {
+    height: 220px !important;
+}
+
+min-height
+}
