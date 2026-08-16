@@ -3587,4 +3587,8 @@ footer strong {
     }
 
 }
+
+    .nav-links.active {
+    display: flex;
+}
 }
