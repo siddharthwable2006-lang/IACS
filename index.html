@@ -2302,6 +2302,251 @@
 
     <canvas id="batteryChart"></canvas>
 
+    <section class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Charging Overview</h2>
+            <p>Real-time battery operating parameters</p>
+        </div>
+
+        <button class="btn btn-danger">
+            ⏻ Stop Charging
+        </button>
+    </div>
+
+
+    <div class="metric-grid">
+
+        <!-- SOC -->
+        <div class="card metric-card">
+
+            <div class="metric-top">
+                <span class="metric-label">
+                    State of Charge
+                </span>
+
+                <span class="metric-icon">
+                    🔋
+                </span>
+            </div>
+
+            <div class="soc-wrapper">
+
+                <div class="soc-circle">
+
+                    <span class="soc-value">
+                        78%
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="metric-footer">
+                <span>Target SOC</span>
+                <strong>90%</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Voltage -->
+        <div class="card metric-card">
+
+            <div class="metric-top">
+                <span class="metric-label">
+                    Battery Voltage
+                </span>
+
+                <span class="metric-icon">
+                    ⚡
+                </span>
+            </div>
+
+            <div class="metric-value">
+                48.6
+                <span class="metric-unit">V</span>
+            </div>
+
+            <div>
+
+                <div class="progress">
+                    <div
+                        class="progress-value"
+                        style="width:81%">
+                    </div>
+                </div>
+
+                <div class="metric-footer">
+                    <span>Nominal</span>
+                    <strong>60 V</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Current -->
+        <div class="card metric-card">
+
+            <div class="metric-top">
+                <span class="metric-label">
+                    Charging Current
+                </span>
+
+                <span class="metric-icon">
+                    ⚡
+                </span>
+            </div>
+
+            <div class="metric-value">
+                6.42
+                <span class="metric-unit">A</span>
+            </div>
+
+            <div>
+
+                <div class="progress">
+                    <div
+                        class="progress-value"
+                        style="width:64%">
+                    </div>
+                </div>
+
+                <div class="metric-footer">
+                    <span>Maximum</span>
+                    <strong>10 A</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Temperature -->
+        <div class="card metric-card">
+
+            <div class="metric-top">
+                <span class="metric-label">
+                    Battery Temperature
+                </span>
+
+                <span class="metric-icon">
+                    🌡
+                </span>
+            </div>
+
+            <div class="metric-value">
+                31.8
+                <span class="metric-unit">°C</span>
+            </div>
+
+            <div class="metric-footer">
+                <span>● Normal</span>
+                <strong>45°C</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+    <div class="two-column">
+
+    <div class="card chart-card">
+
+        <div class="chart-header">
+
+            <div>
+                <h3>Battery Charging Profile</h3>
+                <p>Voltage, current and SOC trend</p>
+            </div>
+
+            <select>
+                <option>Last 30 min</option>
+                <option>Last 1 hour</option>
+                <option>Last 6 hours</option>
+            </select>
+
+        </div>
+
+        <div class="chart-container">
+            <canvas id="batteryChart"></canvas>
+        </div>
+
+    </div>
+
+
+    <div class="card control-card">
+
+        <div class="section-header">
+
+            <div>
+                <h3>Adaptive Control</h3>
+                <p>ESP32 decision engine</p>
+            </div>
+
+            <span class="badge">
+                ACTIVE
+            </span>
+
+        </div>
+
+
+        <div class="control-steps">
+
+            <div class="control-step done">
+                <div class="step-circle">✓</div>
+                <span>Sense</span>
+            </div>
+
+            <div class="control-step done">
+                <div class="step-circle">✓</div>
+                <span>Analyze</span>
+            </div>
+
+            <div class="control-step active">
+                <div class="step-circle">⚡</div>
+                <span>Decide</span>
+            </div>
+
+            <div class="control-step">
+                <div class="step-circle">4</div>
+                <span>Adjust</span>
+            </div>
+
+            <div class="control-step">
+                <div class="step-circle">5</div>
+                <span>Measure</span>
+            </div>
+
+        </div>
+
+
+        <div class="decision-box">
+
+            <span class="decision-label">
+                Current Decision
+            </span>
+
+            <h3>
+                Maintain Charging
+            </h3>
+
+            <p>
+                Battery conditions are within safe limits.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+    
 
 <!-- JAVASCRIPT -->
 
