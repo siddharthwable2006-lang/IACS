@@ -4770,3 +4770,6 @@ button {
         gap: 8px;
     }
 }
+.chart-container {
+    height: 220px;
+}
