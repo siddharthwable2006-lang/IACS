@@ -3592,3 +3592,1181 @@ footer strong {
     display: flex;
 }
 }
+/* =========================================================
+   IACS - INTELLIGENT ADAPTIVE CHARGING SYSTEM
+   Professional Dashboard Layout
+   ========================================================= */
+
+:root {
+    --bg: #071321;
+    --sidebar: #091827;
+    --card: #0d1d30;
+    --card-light: #11263d;
+    --border: #1c344d;
+
+    --primary: #29a9ff;
+    --primary-dark: #147ec2;
+
+    --success: #24d99b;
+    --warning: #ffb347;
+    --danger: #ff526d;
+
+    --text: #f4f7fb;
+    --muted: #8fa7c1;
+
+    --radius: 16px;
+
+    --sidebar-width: 280px;
+
+    --shadow:
+        0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN APPLICATION
+   ========================================================= */
+
+body {
+    display: flex;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: var(--sidebar-width);
+
+    padding: 28px 18px;
+
+    background: var(--sidebar);
+
+    border-right: 1px solid var(--border);
+
+    overflow-y: auto;
+
+    z-index: 100;
+}
+
+
+/* Logo */
+
+.logo {
+    padding: 0 10px 24px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+.logo p {
+    margin-top: 2px;
+
+    color: var(--text);
+
+    font-size: 16px;
+}
+
+
+/* Navigation heading */
+
+.nav-title {
+    margin: 8px 10px;
+
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+/* Navigation */
+
+.nav {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.nav a {
+    display: flex;
+
+    align-items: center;
+
+    min-height: 50px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    color: var(--muted);
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nav a:hover {
+    background: rgba(41, 169, 255, 0.08);
+
+    color: var(--text);
+}
+
+.nav a.active {
+    background: #102d48;
+
+    color: white;
+
+    border-left: 3px solid var(--primary);
+}
+
+
+/* System status */
+
+.system-status {
+    margin-top: 28px;
+
+    padding: 0 10px;
+}
+
+.system-status strong {
+    display: block;
+
+    color: white;
+
+    font-size: 16px;
+
+    line-height: 1.25;
+}
+
+.system-status span {
+    color: white;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.main-content {
+    width: calc(100% - var(--sidebar-width));
+
+    margin-left: var(--sidebar-width);
+
+    min-height: 100vh;
+
+    padding: 32px 42px 60px;
+}
+
+
+/* Keep dashboard from becoming excessively wide */
+
+.dashboard-container {
+    width: 100%;
+
+    max-width: 1500px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+}
+
+.page-title h1 {
+    font-size: 34px;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.8px;
+}
+
+.page-title p {
+    margin-top: 6px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+}
+
+
+/* Header status */
+
+.header-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+.live-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-weight: 700;
+}
+
+.live-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: var(--success);
+
+    box-shadow:
+        0 0 10px rgba(36, 217, 155, 0.8);
+}
+
+.timer {
+    color: var(--muted);
+
+    font-variant-numeric: tabular-nums;
+}
+
+.user-avatar {
+    display: grid;
+
+    place-items: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.dashboard-section {
+    margin-bottom: 30px;
+}
+
+.section-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 21px;
+
+    line-height: 1.2;
+}
+
+.section-header p {
+    margin-top: 4px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.card {
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 22px;
+
+    box-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   METRIC GRID
+   ========================================================= */
+
+.metric-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* Metric card */
+
+.metric-card {
+    min-height: 220px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+.metric-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.metric-label {
+    color: #9bb1ca;
+
+    font-size: 13px;
+}
+
+.metric-icon {
+    font-size: 20px;
+}
+
+.metric-value {
+    margin-top: 25px;
+
+    font-size: 43px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+.metric-unit {
+    margin-left: 5px;
+
+    color: #a4b7cc;
+
+    font-size: 16px;
+
+    font-weight: 500;
+}
+
+.metric-footer {
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.metric-footer strong {
+    color: white;
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+   ========================================================= */
+
+.progress {
+    width: 100%;
+
+    height: 6px;
+
+    margin-top: 22px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #1a3046;
+}
+
+.progress-value {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--primary);
+}
+
+
+/* =========================================================
+   SOC CIRCLE
+   ========================================================= */
+
+.soc-wrapper {
+    display: grid;
+
+    place-items: center;
+
+    margin: 14px 0;
+}
+
+.soc-circle {
+    width: 128px;
+    height: 128px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            var(--primary) 78%,
+            #20354b 78%
+        );
+
+    position: relative;
+}
+
+.soc-circle::after {
+    content: "";
+
+    position: absolute;
+
+    width: 102px;
+    height: 102px;
+
+    border-radius: 50%;
+
+    background: var(--card);
+}
+
+.soc-value {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 31px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   TWO COLUMN LAYOUT
+   ========================================================= */
+
+.two-column {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.7fr)
+        minmax(320px, 1fr);
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   THREE COLUMN
+   ========================================================= */
+
+.three-column {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   CHART CARD
+   ========================================================= */
+
+.chart-card {
+    min-height: 320px;
+}
+
+.chart-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.chart-header h3 {
+    font-size: 17px;
+}
+
+.chart-header p {
+    color: var(--muted);
+
+    margin-top: 3px;
+
+    font-size: 13px;
+}
+
+
+/* VERY IMPORTANT:
+   Prevent the chart/canvas from becoming huge */
+
+.chart-container {
+    position: relative;
+
+    width: 100%;
+
+    height: 220px;
+
+    min-height: 220px;
+
+    max-height: 220px;
+
+    overflow: hidden;
+}
+
+.chart-container canvas {
+    display: block;
+
+    width: 100% !important;
+
+    height: 220px !important;
+}
+
+
+/* =========================================================
+   ADAPTIVE CONTROL
+   ========================================================= */
+
+.control-card {
+    min-height: 320px;
+}
+
+.badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 5px 10px;
+
+    border-radius: 7px;
+
+    background: rgba(36, 217, 155, 0.12);
+
+    color: var(--success);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+
+/* Control steps */
+
+.control-steps {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 8px;
+
+    margin: 32px 0;
+}
+
+.control-step {
+    text-align: center;
+}
+
+.step-circle {
+    width: 38px;
+    height: 38px;
+
+    margin: 0 auto 8px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #152b43;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.control-step.done .step-circle {
+    background: rgba(36, 217, 155, 0.12);
+
+    color: var(--success);
+}
+
+.control-step.active .step-circle {
+    background: rgba(41, 169, 255, 0.16);
+
+    color: var(--primary);
+}
+
+.control-step span {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* Decision box */
+
+.decision-box {
+    padding: 18px;
+
+    border: 1px solid #1b476c;
+
+    border-radius: 13px;
+
+    background: #102941;
+}
+
+.decision-label {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.decision-box h3 {
+    margin-top: 5px;
+
+    color: var(--primary);
+
+    font-size: 17px;
+}
+
+.decision-box p {
+    margin-top: 3px;
+
+    color: #8fa9c3;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   CHARGING CONTROL
+   ========================================================= */
+
+.setpoint-card {
+    min-height: 270px;
+}
+
+.setpoint-display {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+
+    padding: 25px;
+
+    border-radius: 14px;
+
+    background: #091a2c;
+}
+
+.setpoint-value {
+    font-size: 38px;
+
+    font-weight: 800;
+}
+
+.setpoint-unit {
+    color: white;
+
+    font-size: 20px;
+}
+
+.setpoint-icon {
+    color: var(--success);
+
+    font-size: 32px;
+}
+
+
+/* Slider */
+
+input[type="range"] {
+    width: 100%;
+
+    accent-color: var(--primary);
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SMALL INFORMATION CARDS
+   ========================================================= */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+.info-item {
+    padding: 14px;
+
+    border-radius: 10px;
+
+    background: #091a2c;
+}
+
+.info-item span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.info-item strong {
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   PROTECTION SYSTEM
+   ========================================================= */
+
+.protection-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+    margin-top: 18px;
+}
+
+.protection-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.protection-icon {
+    width: 36px;
+    height: 36px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: rgba(36, 217, 155, 0.12);
+
+    color: var(--success);
+
+    font-size: 18px;
+}
+
+.protection-item strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.protection-item span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ENERGY MARKET
+   ========================================================= */
+
+.price-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+.price-card {
+    min-height: 140px;
+}
+
+.price-label {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.price {
+    margin-top: 14px;
+
+    font-size: 28px;
+
+    font-weight: 800;
+}
+
+.price-unit {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ARCHITECTURE
+   ========================================================= */
+
+.architecture {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.7fr)
+        minmax(320px, 1fr);
+
+    gap: 20px;
+}
+
+
+/* Architecture flow */
+
+.arch-flow {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    min-height: 190px;
+}
+
+.arch-node {
+    min-width: 105px;
+
+    padding: 18px 12px;
+
+    text-align: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 11px;
+
+    background: #0a1a2d;
+}
+
+.arch-node strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.arch-node span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.arch-arrow {
+    color: var(--primary);
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   SYSTEM INFORMATION
+   ========================================================= */
+
+.system-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.system-item {
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: #091a2c;
+}
+
+.system-item span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.system-item strong {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+    border: none;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+
+.btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 42px;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: var(--primary);
+
+    color: white;
+}
+
+.btn-danger {
+    background: rgba(255, 82, 109, 0.13);
+
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 50px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+    :root {
+        --sidebar-width: 230px;
+    }
+
+    .main-content {
+        padding: 28px;
+    }
+
+    .metric-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .price-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .two-column,
+    .architecture {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    :root {
+        --sidebar-width: 0px;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+
+        margin-left: 0;
+
+        padding: 22px 16px;
+    }
+
+    .page-header {
+        flex-direction: column;
+    }
+
+    .metric-grid,
+    .price-grid,
+    .three-column {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .system-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 8px;
+    }
+}
