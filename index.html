@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IACS | Intelligent Adaptive Charging System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div>
+                <h2>IACS</h2>
+                <span>Smart Charging</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="#dashboard" class="active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="#battery">
+                <span>🔋</span>
+                Battery
+            </a>
+
+            <a href="#charging">
+                <span>⚡</span>
+                Charging
+            </a>
+
+            <a href="#analytics">
+                <span>📊</span>
+                Analytics
+            </a>
+
+            <a href="#g2v">
+                <span>↔</span>
+                G2V / V2G
+            </a>
+
+            <a href="#system">
+                <span>⚙</span>
+                System
+            </a>
+
+        </nav>
+
+        <div class="system-status">
+            <div class="status-dot"></div>
+
+            <div>
+                <strong>System Online</strong>
+                <small>ESP32 Connected</small>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+                <h1>Intelligent Adaptive Charging</h1>
+                <p>Real-time EV battery monitoring & adaptive control</p>
+            </div>
+
+            <div class="header-right">
+
+                <div class="live">
+                    <span></span>
+                    LIVE
+                </div>
+
+                <div class="clock" id="clock">
+                    00:00:00
+                </div>
+
+                <div class="profile">
+                    SV
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= OVERVIEW ================= -->
+
+        <section id="dashboard" class="section">
+
+            <div class="section-title">
+                <div>
+                    <h2>Charging Overview</h2>
+                    <p>Real-time battery operating parameters</p>
+                </div>
+
+                <button class="control-btn" onclick="toggleCharging()">
+                    <span id="chargingIcon">⏻</span>
+                    <span id="chargingButton">Stop Charging</span>
+                </button>
+            </div>
+
+
+            <!-- KPI CARDS -->
+
+            <div class="cards">
+
+                <!-- SOC -->
+
+                <div class="card">
+
+                    <div class="card-top">
+                        <span>State of Charge</span>
+                        <span class="icon">🔋</span>
+                    </div>
+
+                    <div class="gauge">
+
+                        <div class="gauge-circle">
+                            <div>
+                                <strong id="socValue">78</strong>
+                                <small>%</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <span>Target SOC</span>
+                        <strong id="targetSOC">90%</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- VOLTAGE -->
+
+                <div class="card">
+
+                    <div class="card-top">
+                        <span>Battery Voltage</span>
+                        <span class="icon">⚡</span>
+                    </div>
+
+                    <div class="big-value">
+                        <strong id="voltage">48.6</strong>
+                        <span>V</span>
+                    </div>
+
+                    <div class="progress">
+                        <div id="voltageBar" style="width: 81%"></div>
+                    </div>
+
+                    <div class="card-footer">
+                        <span>Nominal</span>
+                        <strong>60 V</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- CURRENT -->
+
+                <div class="card">
+
+                    <div class="card-top">
+                        <span>Charging Current</span>
+                        <span class="icon">↯</span>
+                    </div>
+
+                    <div class="big-value">
+                        <strong id="current">6.42</strong>
+                        <span>A</span>
+                    </div>
+
+                    <div class="progress">
+                        <div id="currentBar" style="width: 64%"></div>
+                    </div>
+
+                    <div class="card-footer">
+                        <span>Maximum</span>
+                        <strong>10 A</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- TEMPERATURE -->
+
+                <div class="card">
+
+                    <div class="card-top">
+                        <span>Battery Temperature</span>
+                        <span class="icon">🌡</span>
+                    </div>
+
+                    <div class="big-value">
+                        <strong id="temperature">31.8</strong>
+                        <span>°C</span>
+                    </div>
+
+                    <div class="temperature-status">
+                        <span class="temp-dot"></span>
+                        Normal
+                    </div>
+
+                    <div class="card-footer">
+                        <span>Safe Limit</span>
+                        <strong>45°C</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= BATTERY + ADAPTIVE CONTROL ================= -->
+
+        <section id="battery" class="grid-section">
+
+            <!-- BATTERY GRAPH -->
+
+            <div class="panel large">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Battery Charging Profile</h3>
+                        <p>Voltage, current and SOC trend</p>
+                    </div>
+
+                    <select id="chartRange">
+                        <option>Last 30 min</option>
+                        <option>Last 1 hour</option>
+                        <option>Today</option>
+                    </select>
+
+                </div>
+
+                <canvas id="batteryChart"></canvas>
+
+            </div>
+
+
+            <!-- ADAPTIVE CONTROL -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Adaptive Control</h3>
+                        <p>ESP32 decision engine</p>
+                    </div>
+
+                    <span class="badge active-badge">
+                        ACTIVE
+                    </span>
+                </div>
+
+
+                <div class="control-flow">
+
+                    <div class="flow-item completed">
+                        <div class="flow-icon">✓</div>
+                        <span>Sense</span>
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="flow-item completed">
+                        <div class="flow-icon">✓</div>
+                        <span>Analyze</span>
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="flow-item current-flow">
+                        <div class="flow-icon">⚡</div>
+                        <span>Decide</span>
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-icon">4</div>
+                        <span>Adjust</span>
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-icon">5</div>
+                        <span>Measure</span>
+                    </div>
+
+                </div>
+
+
+                <div class="decision-box">
+
+                    <span>Current Decision</span>
+
+                    <strong id="decision">
+                        Maintain Charging
+                    </strong>
+
+                    <small>
+                        Battery conditions are within safe limits.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CHARGING CONTROL ================= -->
+
+        <section id="charging" class="grid-section">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Charging Control</h3>
+                        <p>Adaptive voltage setpoint</p>
+                    </div>
+
+                    <span class="badge">AUTO</span>
+
+                </div>
+
+
+                <div class="setpoint">
+
+                    <div>
+                        <span>Voltage Setpoint</span>
+
+                        <strong>
+                            <span id="vset">54.2</span> V
+                        </strong>
+                    </div>
+
+                    <div class="setpoint-arrow">
+                        ↑
+                    </div>
+
+                </div>
+
+
+                <div class="slider-container">
+
+                    <label>
+                        Charging Voltage
+                        <span id="sliderValue">54.2 V</span>
+                    </label>
+
+                    <input type="range"
+                        id="voltageSlider"
+                        min="45"
+                        max="60"
+                        step="0.1"
+                        value="54.2">
+
+                </div>
+
+
+                <div class="charging-info">
+
+                    <div>
+                        <span>Charging Mode</span>
+                        <strong>Adaptive</strong>
+                    </div>
+
+                    <div>
+                        <span>Control Method</span>
+                        <strong>DAC → Buck</strong>
+                    </div>
+
+                    <div>
+                        <span>Controller</span>
+                        <strong>ESP32</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROTECTION -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Protection System</h3>
+                        <p>Hardware & software safety</p>
+                    </div>
+
+                </div>
+
+
+                <div class="protection-list">
+
+                    <div class="protection">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>BMS Protection</strong>
+                            <span>Battery management system active</span>
+                        </div>
+                    </div>
+
+                    <div class="protection">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>Over Temperature</strong>
+                            <span>Temperature within safe range</span>
+                        </div>
+                    </div>
+
+                    <div class="protection">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>Over Current</strong>
+                            <span>Charging current normal</span>
+                        </div>
+                    </div>
+
+                    <div class="protection">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>Relay</strong>
+                            <span>Charging relay connected</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ANALYTICS ================= -->
+
+        <section id="analytics" class="panel analytics">
+
+            <div class="panel-header">
+
+                <div>
+                    <h3>Energy & Charging Analytics</h3>
+                    <p>Charging performance monitoring</p>
+                </div>
+
+                <button class="download-btn">
+                    Export Data
+                </button>
+
+            </div>
+
+            <canvas id="energyChart"></canvas>
+
+        </section>
+
+
+        <!-- ================= G2V V2G ================= -->
+
+        <section id="g2v" class="section">
+
+            <div class="section-title">
+
+                <div>
+                    <h2>G2V / V2G Energy Market</h2>
+                    <p>Dynamic electricity pricing</p>
+                </div>
+
+            </div>
+
+
+            <div class="price-cards">
+
+                <div class="price-card">
+
+                    <span>G2V Buying Price</span>
+
+                    <strong>
+                        ₹<span id="g2vBuy">36.17</span>
+                    </strong>
+
+                    <small>per kWh</small>
+
+                </div>
+
+
+                <div class="price-card">
+
+                    <span>G2V Selling Price</span>
+
+                    <strong>
+                        ₹<span id="g2vSell">47.02</span>
+                    </strong>
+
+                    <small>per kWh</small>
+
+                </div>
+
+
+                <div class="price-card">
+
+                    <span>V2G Buying Price</span>
+
+                    <strong>
+                        ₹<span id="v2gBuy">35.62</span>
+                    </strong>
+
+                    <small>per kWh</small>
+
+                </div>
+
+
+                <div class="price-card">
+
+                    <span>V2G Selling Price</span>
+
+                    <strong>
+                        ₹<span id="v2gSell">39.18</span>
+                    </strong>
+
+                    <small>per kWh</small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SYSTEM ================= -->
+
+        <section id="system" class="grid-section">
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>System Architecture</h3>
+                </div>
+
+                <div class="architecture">
+
+                    <div class="architecture-item">
+                        AC-DC
+                        <small>Power Supply</small>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="architecture-item">
+                        Buck
+                        <small>Converter</small>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="architecture-item">
+                        Battery
+                        <small>EV Battery</small>
+                    </div>
+
+                </div>
+
+                <div class="architecture second">
+
+                    <div class="architecture-item">
+                        Sensors
+                        <small>V / I / T</small>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="architecture-item highlight">
+                        ESP32
+                        <small>Controller</small>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="architecture-item">
+                        DAC
+                        <small>Control</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>System Information</h3>
+                </div>
+
+                <div class="system-info">
+
+                    <div>
+                        <span>Controller</span>
+                        <strong>ESP32</strong>
+                    </div>
+
+                    <div>
+                        <span>Charging Method</span>
+                        <strong>Adaptive</strong>
+                    </div>
+
+                    <div>
+                        <span>SOC Method</span>
+                        <strong>Coulomb Counting</strong>
+                    </div>
+
+                    <div>
+                        <span>Control Interface</span>
+                        <strong>DAC</strong>
+                    </div>
+
+                    <div>
+                        <span>Power Stage</span>
+                        <strong>Adjustable Buck</strong>
+                    </div>
+
+                    <div>
+                        <span>Protection</span>
+                        <strong>BMS + Relay</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <div>
+                <strong>IACS</strong> — Intelligent Adaptive Charging System
+            </div>
+
+            <div>
+                Sanjivani College of Engineering, Kopargaon
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
