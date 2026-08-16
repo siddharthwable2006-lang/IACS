@@ -1748,3 +1748,28 @@ setInterval(
     updateBattery,
     3000
 );
+document.getElementById("loginBtn").addEventListener("click", function () {
+    window.location.href = "login.html";
+});
+
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !message) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    alert("Your message has been submitted successfully!");
+});
+
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector(".nav-links");
+
+menuBtn.addEventListener("click", () => {
+    nav.classList.toggle("active");
+});
