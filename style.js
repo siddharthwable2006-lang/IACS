@@ -1773,3 +1773,65 @@ const nav = document.querySelector(".nav-links");
 menuBtn.addEventListener("click", () => {
     nav.classList.toggle("active");
 });
+
+const ctx = document.getElementById("batteryChart");
+
+new Chart(ctx, {
+    type: "line",
+
+    data: {
+        labels: [
+            "10:00",
+            "10:05",
+            "10:10",
+            "10:15",
+            "10:20",
+            "10:25"
+        ],
+
+        datasets: [
+            {
+                label: "Battery Voltage",
+
+                data: [
+                    47.8,
+                    48.1,
+                    48.2,
+                    48.4,
+                    48.5,
+                    48.6
+                ],
+
+                borderWidth: 2,
+
+                tension: 0.35,
+
+                pointRadius: 2
+            }
+        ]
+    },
+
+    options: {
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
+
+            y: {
+                beginAtZero: false
+            }
+        }
+    }
+});
