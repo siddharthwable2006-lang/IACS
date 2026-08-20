@@ -2125,3 +2125,86 @@ input[type="range"] {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* Slightly larger text inside charging panels */
+    .charging-page-large .panel h3,
+    .charging-page-large .charging-value,
+    .charging-page-large .live-parameter strong {
+        font-size: 1.15em;
+    }
+
+    .charging-page-large .live-parameter span {
+        font-size: 1.02em;
+    }
+
+    .charging-page-large .unit-label,
+    .charging-page-large .range-labels {
+        font-size: 1em;
+    }
+
+    /* Voltage control */
+    .voltage-control {
+        margin-top: 28px;
+    }
+
+    .voltage-value {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin: 20px 0;
+    }
+
+    .voltage-value span {
+        font-size: 3.2rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .voltage-value small {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    #voltageSlider {
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .voltage-adjust {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-top: 22px;
+    }
+
+    .voltage-adjust .primary-btn {
+        flex: 1;
+    }
+
+    .voltage-adjust .secondary-btn {
+        min-width: 48px;
+        min-height: 44px;
+        font-size: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+        .voltage-value span {
+            font-size: 2.6rem;
+        }
+    }
+</style>
