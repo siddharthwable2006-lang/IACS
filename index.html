@@ -1,244 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IACS | Dashboard</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 
-<title>IACS | System</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 
 <body>
 
 <div class="app">
 
-<aside class="sidebar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-<div class="brand">
+        <div class="brand">
+            <div class="brand-icon">I</div>
 
-<div class="brand-icon">I</div>
+            <div>
+                <h2>IACS</h2>
+                <span>Intelligent Energy Control</span>
+            </div>
+        </div>
 
-<div>
-<h2>IACS</h2>
-<span>Intelligent Energy Control</span>
+        <nav>
+
+            <a href="index.html" class="nav-item active">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="battery.html" class="nav-item">
+                <span>◉</span>
+                Battery
+            </a>
+
+            <a href="charging.html" class="nav-item">
+                <span>⚡</span>
+                Charging
+            </a>
+
+            <a href="energy.html" class="nav-item">
+                <span>⇄</span>
+                Energy Flow
+            </a>
+
+            <a href="analytics.html" class="nav-item">
+                <span>▥</span>
+                Analytics
+            </a>
+
+            <a href="system.html" class="nav-item">
+                <span>⚙</span>
+                System
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="connection">
+
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>System Online</strong>
+                    <small>Simulation Mode</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <div class="breadcrumb">
+                    IACS / Dashboard
+                </div>
+
+                <h1>Energy Control Dashboard</h1>
+            </div>
+
+            <div class="top-status">
+                <span class="live-dot"></span>
+                LIVE
+                <span id="clock">00:00:00</span>
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="welcome">
+
+                <div>
+                    <span class="eyebrow">
+                        INTELLIGENT ENERGY CONTROL
+                    </span>
+
+                    <h2>
+                        Energy Overview
+                    </h2>
+
+                    <p>
+                        Monitor your EV charging system in real time.
+                    </p>
+                </div>
+
+                <a href="charging.html" class="primary-btn">
+                    Charging Control →
+                </a>
+
+            </div>
+
+
+            <!-- PARAMETER CARDS -->
+
+            <div class="parameter-grid">
+
+                <a href="battery.html" class="parameter-card">
+
+                    <div class="card-top">
+                        <span>BATTERY SOC</span>
+                        <span>↗</span>
+                    </div>
+
+                    <div class="big-value">
+                        <span id="soc">78</span>%
+                    </div>
+
+                    <div class="progress">
+                        <div id="socBar" style="width:78%"></div>
+                    </div>
+
+                    <small>State of charge</small>
+
+                </a>
+
+
+                <a href="battery.html" class="parameter-card">
+
+                    <div class="card-top">
+                        <span>BATTERY VOLTAGE</span>
+                        <span>↗</span>
+                    </div>
+
+                    <div class="big-value">
+                        <span id="voltage">48.6</span>
+                        <small>V</small>
+                    </div>
+
+                    <span class="positive">
+                        ● Stable
+                    </span>
+
+                </a>
+
+
+                <a href="charging.html" class="parameter-card">
+
+                    <div class="card-top">
+                        <span>CHARGING CURRENT</span>
+                        <span>↗</span>
+                    </div>
+
+                    <div class="big-value">
+                        <span id="current">6.4</span>
+                        <small>A</small>
+                    </div>
+
+                    <span id="dashboardChargingStatus" class="positive">
+                        ● Charging
+                    </span>
+
+                </a>
+
+
+                <a href="energy.html" class="parameter-card">
+
+                    <div class="card-top">
+                        <span>POWER</span>
+                        <span>↗</span>
+                    </div>
+
+                    <div class="big-value">
+                        <span id="power">311</span>
+                        <small>W</small>
+                    </div>
+
+                    <span class="positive">
+                        ● G2V
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- CHART + FLOW -->
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <span class="eyebrow">LIVE DATA</span>
+                            <h3>Power Performance</h3>
+                        </div>
+
+                        <a href="analytics.html">
+                            Analytics →
+                        </a>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="powerChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <span class="eyebrow">
+                                ENERGY DIRECTION
+                            </span>
+
+                            <h3>Power Flow</h3>
+                        </div>
+
+                        <a href="energy.html">
+                            Details →
+                        </a>
+
+                    </div>
+
+
+                    <div class="power-flow">
+
+                        <div class="flow-node">
+
+                            <div class="flow-icon">
+                                GRID
+                            </div>
+
+                            <strong>GRID</strong>
+
+                            <small>
+                                <span id="gridPower">311</span> W
+                            </small>
+
+                        </div>
+
+
+                        <div class="flow-line">
+                            →
+                        </div>
+
+
+                        <div class="flow-node">
+
+                            <div class="flow-icon">
+                                EV
+                            </div>
+
+                            <strong>BATTERY</strong>
+
+                            <small>
+                                G2V
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mode-display">
+
+                        <span>Current Mode</span>
+
+                        <strong>
+                            GRID → VEHICLE
+                        </strong>
+
+                        <small>
+                            Grid-to-Vehicle operation
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACCESS -->
+
+            <div class="section-title">
+
+                <span class="eyebrow">
+                    CONTROL CENTER
+                </span>
+
+                <h3>
+                    Quick Access
+                </h3>
+
+            </div>
+
+
+            <div class="quick-grid">
+
+                <a href="battery.html" class="quick-card">
+
+                    <span>◉</span>
+
+                    <div>
+                        <strong>Battery</strong>
+                        <small>
+                            SOC, voltage, current
+                        </small>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="charging.html" class="quick-card">
+
+                    <span>⚡</span>
+
+                    <div>
+                        <strong>Charging</strong>
+                        <small>
+                            Power and charging control
+                        </small>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="energy.html" class="quick-card">
+
+                    <span>⇄</span>
+
+                    <div>
+                        <strong>Energy Flow</strong>
+                        <small>
+                            G2V and V2G
+                        </small>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="analytics.html" class="quick-card">
+
+                    <span>▥</span>
+
+                    <div>
+                        <strong>Analytics</strong>
+                        <small>
+                            System performance
+                        </small>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
 </div>
 
-</div>
 
-
-<nav>
-
-<a href="index.html" class="nav-item">
-<span>⌂</span>
-Dashboard
-</a>
-
-<a href="battery.html" class="nav-item">
-<span>◉</span>
-Battery
-</a>
-
-<a href="charging.html" class="nav-item">
-<span>⚡</span>
-Charging
-</a>
-
-<a href="energy.html" class="nav-item">
-<span>⇄</span>
-Energy Flow
-</a>
-
-<a href="analytics.html" class="nav-item">
-<span>▥</span>
-Analytics
-</a>
-
-<a href="system.html" class="nav-item active">
-<span>⚙</span>
-System
-</a>
-
-</nav>
-
-</aside>
-
-
-<main class="main">
-
-<header class="topbar">
-
-<div>
-
-<div class="breadcrumb">
-IACS / System
-</div>
-
-<h1>
-System Information
-</h1>
-
-</div>
-
-
-<div class="top-status">
-
-<span class="live-dot"></span>
-ONLINE
-
-</div>
-
-</header>
-
-
-<section class="content">
-
-
-<div class="page-intro">
-
-<span class="eyebrow">
-SYSTEM MANAGEMENT
-</span>
-
-<h2>
-System Information
-</h2>
-
-<p>
-Controller and communication information.
-</p>
-
-</div>
-
-
-<div class="info-grid system-info">
-
-<div class="metric-panel">
-
-<span>
-CONTROLLER
-</span>
-
-<strong>
-ESP32
-</strong>
-
-<small>
-Main controller
-</small>
-
-</div>
-
-
-<div class="metric-panel">
-
-<span>
-FIRMWARE
-</span>
-
-<strong>
-v2.1.0
-</strong>
-
-<small>
-Current firmware
-</small>
-
-</div>
-
-
-<div class="metric-panel">
-
-<span>
-CONNECTION
-</span>
-
-<strong>
-Online
-</strong>
-
-<small>
-Communication active
-</small>
-
-</div>
-
-
-<div class="metric-panel">
-
-<span>
-MODE
-</span>
-
-<strong>
-Simulation
-</strong>
-
-<small>
-Demo environment
-</small>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<div>
-
-<span class="eyebrow">
-SYSTEM STATUS
-</span>
-
-<h3>
-Component Health
-</h3>
-
-</div>
-
-</div>
-
-
-<div class="health-list">
-
-<div>
-<span>ESP32 Controller</span>
-<strong>● Online</strong>
-</div>
-
-<div>
-<span>Battery Sensor</span>
-<strong>● Online</strong>
-</div>
-
-<div>
-<span>Current Sensor</span>
-<strong>● Online</strong>
-</div>
-
-<div>
-<span>Voltage Sensor</span>
-<strong>● Online</strong>
-</div>
-
-</div>
-
-</div>
-
-
-</section>
-
-</main>
-
-</div>
-
+<div id="toast" class="toast"></div>
 
 <script src="script.js"></script>
 
