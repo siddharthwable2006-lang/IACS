@@ -1575,3 +1575,168 @@ input[type="range"] {
     }
 
 }
+/* =========================
+   POWER CONTROL
+========================= */
+
+.power-control {
+
+    margin-top: 30px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.power-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.power-status strong {
+
+    display: block;
+
+    font-size: 12px;
+
+    letter-spacing: .5px;
+}
+
+
+.power-status small {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    margin-top: 4px;
+}
+
+
+.power-dot {
+
+    width: 11px;
+
+    height: 11px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 12px var(--green);
+
+    transition: .3s;
+}
+
+
+.power-btn {
+
+    min-width: 145px;
+
+    padding: 14px 20px;
+
+    border-radius: 10px;
+
+    border: 1px solid;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+
+.power-symbol {
+
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+
+/* POWER ON */
+
+.power-btn.on {
+
+    background:
+        rgba(39,214,154,.12);
+
+    border-color:
+        rgba(39,214,154,.4);
+
+    color: var(--green);
+
+    box-shadow:
+        0 0 20px rgba(39,214,154,.08);
+}
+
+
+.power-btn.on:hover {
+
+    background:
+        rgba(39,214,154,.2);
+
+    transform: translateY(-2px);
+}
+
+
+/* POWER OFF */
+
+.power-btn.off {
+
+    background:
+        rgba(255,102,117,.1);
+
+    border-color:
+        rgba(255,102,117,.35);
+
+    color: var(--danger);
+
+    box-shadow: none;
+}
+
+
+.power-btn.off:hover {
+
+    background:
+        rgba(255,102,117,.16);
+
+    transform: translateY(-2px);
+}
+
+
+.power-dot.off {
+
+    background: var(--danger);
+
+    box-shadow:
+        0 0 10px rgba(255,102,117,.5);
+}
