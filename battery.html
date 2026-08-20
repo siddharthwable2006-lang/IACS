@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IACS | Battery</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-icon">I</div>
+
+        <div>
+            <h2>IACS</h2>
+            <span>Energy Control</span>
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html" class="nav-item">
+            <span>⌂</span>
+            Dashboard
+        </a>
+
+        <a href="battery.html" class="nav-item active">
+            <span>◉</span>
+            Battery
+        </a>
+
+        <a href="charging.html" class="nav-item">
+            <span>⚡</span>
+            Charging
+        </a>
+
+        <a href="energy.html" class="nav-item">
+            <span>⇄</span>
+            Energy Flow
+        </a>
+
+        <a href="analytics.html" class="nav-item">
+            <span>▥</span>
+            Analytics
+        </a>
+
+        <a href="system.html" class="nav-item">
+            <span>⚙</span>
+            System
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="connection">
+
+            <span class="status-dot"></span>
+
+            <div>
+                <strong>System Online</strong>
+                <small>Simulation Mode</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+    <div>
+
+        <div class="breadcrumb">
+            IACS / Battery
+        </div>
+
+        <h1>Battery Monitoring</h1>
+
+    </div>
+
+
+    <div class="top-status">
+
+        <span class="live-dot"></span>
+        LIVE
+
+        <span id="clock">
+            00:00:00
+        </span>
+
+    </div>
+
+</header>
+
+
+<section class="content">
+
+<div class="page-intro">
+
+    <span class="eyebrow">
+        BATTERY MANAGEMENT
+    </span>
+
+    <h2>
+        Battery Status
+    </h2>
+
+    <p>
+        Monitor battery condition, charge level and electrical parameters.
+    </p>
+
+</div>
+
+
+<div class="battery-layout">
+
+
+    <div class="panel battery-main">
+
+        <span class="eyebrow">
+            STATE OF CHARGE
+        </span>
+
+        <div class="battery-gauge">
+
+            <div class="gauge-inner">
+
+                <strong id="batterySOC">
+                    78%
+                </strong>
+
+                <span>
+                    SOC
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="battery-status">
+            ● Battery Healthy
+        </div>
+
+    </div>
+
+
+    <div class="parameter-list">
+
+        <div class="metric-panel">
+
+            <span>VOLTAGE</span>
+
+            <strong>
+                <span id="batteryVoltage">48.6</span> V
+            </strong>
+
+            <small>
+                Nominal battery voltage
+            </small>
+
+        </div>
+
+
+        <div class="metric-panel">
+
+            <span>CURRENT</span>
+
+            <strong>
+                <span id="batteryCurrent">6.4</span> A
+            </strong>
+
+            <small>
+                Present current
+            </small>
+
+        </div>
+
+
+        <div class="metric-panel">
+
+            <span>TEMPERATURE</span>
+
+            <strong>
+                <span id="temperature">31.4</span> °C
+            </strong>
+
+            <small>
+                Battery temperature
+            </small>
+
+        </div>
+
+
+        <div class="metric-panel">
+
+            <span>HEALTH</span>
+
+            <strong>
+                96%
+            </strong>
+
+            <small>
+                Estimated battery health
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-header">
+
+    <div>
+
+        <span class="eyebrow">
+            BATTERY INFORMATION
+        </span>
+
+        <h3>
+            System Parameters
+        </h3>
+
+    </div>
+
+</div>
+
+
+<div class="info-grid">
+
+    <div>
+        <span>Battery Type</span>
+        <strong>Li-ion</strong>
+    </div>
+
+    <div>
+        <span>Rated Capacity</span>
+        <strong>100 Ah</strong>
+    </div>
+
+    <div>
+        <span>Nominal Voltage</span>
+        <strong>48 V</strong>
+    </div>
+
+    <div>
+        <span>Cycle Count</span>
+        <strong>214</strong>
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
