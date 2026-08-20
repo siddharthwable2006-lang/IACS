@@ -692,3 +692,95 @@ if (analyticsCanvas) {
     );
 
 }
+/* =========================
+   CHARGING POWER ON / OFF
+========================= */
+
+let chargingPowerOn = true;
+
+
+function toggleChargingPower() {
+
+    chargingPowerOn = !chargingPowerOn;
+
+
+    const button =
+        document.getElementById("powerButton");
+
+    const buttonText =
+        document.getElementById("powerButtonText");
+
+    const powerText =
+        document.getElementById("powerText");
+
+    const powerSubtext =
+        document.getElementById("powerSubtext");
+
+    const indicator =
+        document.getElementById("powerIndicator");
+
+
+    if (!button) return;
+
+
+    if (chargingPowerOn) {
+
+        /* POWER ON */
+
+        button.classList.remove("off");
+
+        button.classList.add("on");
+
+
+        buttonText.textContent =
+            "POWER ON";
+
+
+        powerText.textContent =
+            "POWER ON";
+
+
+        powerSubtext.textContent =
+            "Charging system is enabled";
+
+
+        indicator.classList.remove("off");
+
+
+        showToast(
+            "Charging power turned ON"
+        );
+
+    }
+
+    else {
+
+        /* POWER OFF */
+
+        button.classList.remove("on");
+
+        button.classList.add("off");
+
+
+        buttonText.textContent =
+            "POWER OFF";
+
+
+        powerText.textContent =
+            "POWER OFF";
+
+
+        powerSubtext.textContent =
+            "Charging system is disabled";
+
+
+        indicator.classList.add("off");
+
+
+        showToast(
+            "Charging power turned OFF"
+        );
+
+    }
+
+}
