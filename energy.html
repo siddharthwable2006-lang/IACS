@@ -25,7 +25,7 @@
 
 <div>
 <h2>IACS</h2>
-<span>Energy Control</span>
+<span>Intelligent Energy Control</span>
 </div>
 
 </div>
@@ -78,14 +78,16 @@ System
 IACS / Energy Flow
 </div>
 
-<h1>Energy Flow</h1>
+<h1>
+Energy Flow
+</h1>
 
 </div>
+
 
 <div class="top-status">
 
 <span class="live-dot"></span>
-
 LIVE
 
 <span id="clock">
@@ -111,7 +113,7 @@ Energy Direction
 </h2>
 
 <p>
-Select how energy should move between the grid and vehicle.
+Select the direction of energy transfer.
 </p>
 
 </div>
@@ -121,8 +123,8 @@ Select how energy should move between the grid and vehicle.
 
 
 <button
-class="mode-card selected"
 id="g2vButton"
+class="mode-card selected"
 onclick="setEnergyMode('G2V')"
 >
 
@@ -142,8 +144,8 @@ Grid to Vehicle
 
 
 <button
-class="mode-card"
 id="v2gButton"
+class="mode-card"
 onclick="setEnergyMode('V2G')"
 >
 
@@ -160,6 +162,7 @@ Vehicle to Grid
 </small>
 
 </button>
+
 
 </div>
 
@@ -181,7 +184,7 @@ Grid → Vehicle
 </div>
 
 <strong id="energyPower">
-312 W
+311 W
 </strong>
 
 </div>
@@ -195,14 +198,16 @@ Grid → Vehicle
 GRID
 </div>
 
-<span>GRID</span>
+<span>
+GRID
+</span>
 
 </div>
 
 
 <div
-class="energy-arrow"
 id="energyArrow"
+class="energy-arrow"
 >
 →
 </div>
@@ -214,7 +219,9 @@ id="energyArrow"
 EV
 </div>
 
-<span>VEHICLE</span>
+<span>
+VEHICLE
+</span>
 
 </div>
 
@@ -228,7 +235,7 @@ Energy is flowing from the grid into the vehicle battery.
 </strong>
 
 <p>
-Bidirectional power transfer is currently controlled by IACS.
+IACS is controlling the direction of power transfer.
 </p>
 
 </div>
@@ -246,5 +253,4 @@ Bidirectional power transfer is currently controlled by IACS.
 <script src="script.js"></script>
 
 </body>
-
 </html>
