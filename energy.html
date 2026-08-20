@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IACS | Energy Flow</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="brand">
+
+<div class="brand-icon">I</div>
+
+<div>
+<h2>IACS</h2>
+<span>Energy Control</span>
+</div>
+
+</div>
+
+
+<nav>
+
+<a href="index.html" class="nav-item">
+<span>⌂</span>
+Dashboard
+</a>
+
+<a href="battery.html" class="nav-item">
+<span>◉</span>
+Battery
+</a>
+
+<a href="charging.html" class="nav-item">
+<span>⚡</span>
+Charging
+</a>
+
+<a href="energy.html" class="nav-item active">
+<span>⇄</span>
+Energy Flow
+</a>
+
+<a href="analytics.html" class="nav-item">
+<span>▥</span>
+Analytics
+</a>
+
+<a href="system.html" class="nav-item">
+<span>⚙</span>
+System
+</a>
+
+</nav>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+<div>
+
+<div class="breadcrumb">
+IACS / Energy Flow
+</div>
+
+<h1>Energy Flow</h1>
+
+</div>
+
+<div class="top-status">
+
+<span class="live-dot"></span>
+
+LIVE
+
+<span id="clock">
+00:00:00
+</span>
+
+</div>
+
+</header>
+
+
+<section class="content">
+
+
+<div class="page-intro">
+
+<span class="eyebrow">
+BIDIRECTIONAL ENERGY
+</span>
+
+<h2>
+Energy Direction
+</h2>
+
+<p>
+Select how energy should move between the grid and vehicle.
+</p>
+
+</div>
+
+
+<div class="mode-selection">
+
+
+<button
+class="mode-card selected"
+id="g2vButton"
+onclick="setEnergyMode('G2V')"
+>
+
+<span class="mode-icon">
+GRID → EV
+</span>
+
+<strong>
+G2V
+</strong>
+
+<small>
+Grid to Vehicle
+</small>
+
+</button>
+
+
+<button
+class="mode-card"
+id="v2gButton"
+onclick="setEnergyMode('V2G')"
+>
+
+<span class="mode-icon">
+EV → GRID
+</span>
+
+<strong>
+V2G
+</strong>
+
+<small>
+Vehicle to Grid
+</small>
+
+</button>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-header">
+
+<div>
+
+<span class="eyebrow">
+LIVE POWER FLOW
+</span>
+
+<h3 id="energyModeTitle">
+Grid → Vehicle
+</h3>
+
+</div>
+
+<strong id="energyPower">
+312 W
+</strong>
+
+</div>
+
+
+<div class="energy-flow-large">
+
+<div class="energy-node">
+
+<div class="energy-icon">
+GRID
+</div>
+
+<span>GRID</span>
+
+</div>
+
+
+<div
+class="energy-arrow"
+id="energyArrow"
+>
+→
+</div>
+
+
+<div class="energy-node">
+
+<div class="energy-icon">
+EV
+</div>
+
+<span>VEHICLE</span>
+
+</div>
+
+</div>
+
+
+<div class="mode-description">
+
+<strong id="modeDescription">
+Energy is flowing from the grid into the vehicle battery.
+</strong>
+
+<p>
+Bidirectional power transfer is currently controlled by IACS.
+</p>
+
+</div>
+
+</div>
+
+
+</section>
+
+</main>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
