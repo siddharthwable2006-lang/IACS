@@ -784,3 +784,76 @@ function toggleChargingPower() {
     }
 
 }
+function simulateData() {
+
+    soc += (Math.random() - .5) * .05;
+
+    voltage += (Math.random() - .5) * .1;
+
+    current += (Math.random() - .5) * .1;
+
+
+   function simulateData() {
+
+    /*
+       When charging power is OFF,
+       don't increase charging current.
+    */
+
+    if (chargingPowerOn) {
+
+        soc += 0.02;
+
+        current += (Math.random() - .5) * .1;
+
+    } else {
+
+        current = 0;
+
+    }
+
+
+    voltage += (Math.random() - .5) * .1;
+
+    temperature += (Math.random() - .5) * .15;
+
+
+    soc = Math.max(
+        0,
+        Math.min(100, soc)
+    );
+
+
+    current = Math.max(
+        0,
+        Math.min(10, current)
+    );
+
+
+    power = voltage * current;
+
+
+    updateElement(
+        "chargingCurrent",
+        current.toFixed(1)
+    );
+
+
+    updateElement(
+        "batteryCurrent",
+        current.toFixed(1)
+    );
+
+
+    updateElement(
+        "power",
+        Math.round(power)
+    );
+
+
+    updateElement(
+        "chargingPower",
+        Math.round(power)
+    );
+
+}
