@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IACS | Dashboard</title>
@@ -100,7 +101,8 @@
         </header>
 
 
-        <section class="content">
+    
+            <section class="content charging-page-large">
 
             <div class="welcome">
 
@@ -235,6 +237,100 @@
 
 
                 <div class="panel">
+
+                    <!-- VOLTAGE CONTROL -->
+
+<div class="panel voltage-control">
+
+    <div class="panel-header">
+
+        <div>
+
+            <span class="eyebrow">
+                VOLTAGE SETPOINT
+            </span>
+
+            <h3>
+                Charging Voltage
+            </h3>
+
+        </div>
+
+        <span class="unit-label">
+            40–60 V
+        </span>
+
+    </div>
+
+
+    <div class="voltage-value">
+
+        <span id="voltageSetpoint">
+            48.6
+        </span>
+
+        <small>
+            V
+        </small>
+
+    </div>
+
+
+    <input
+        type="range"
+        id="voltageSlider"
+        min="40"
+        max="60"
+        step="0.1"
+        value="48.6"
+    >
+
+
+    <div class="range-labels">
+
+        <span>
+            40 V
+        </span>
+
+        <span>
+            50 V
+        </span>
+
+        <span>
+            60 V
+        </span>
+
+    </div>
+
+
+    <div class="voltage-adjust">
+
+        <button
+            class="secondary-btn"
+            onclick="adjustVoltage(-1)"
+        >
+            −
+        </button>
+
+
+        <button
+            class="primary-btn"
+            onclick="applyVoltage()"
+        >
+            APPLY VOLTAGE
+        </button>
+
+
+        <button
+            class="secondary-btn"
+            onclick="adjustVoltage(1)"
+        >
+            +
+        </button>
+
+    </div>
+
+</div>
 
                     <div class="panel-header">
 
