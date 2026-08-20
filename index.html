@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>IACS | Dashboard</title>
 
     <link rel="stylesheet" href="style.css">
@@ -23,7 +22,7 @@
 
             <div>
                 <h2>IACS</h2>
-                <span>Energy Control</span>
+                <span>Intelligent Energy Control</span>
             </div>
         </div>
 
@@ -64,12 +63,14 @@
         <div class="sidebar-bottom">
 
             <div class="connection">
+
                 <span class="status-dot"></span>
 
                 <div>
                     <strong>System Online</strong>
                     <small>Simulation Mode</small>
                 </div>
+
             </div>
 
         </div>
@@ -83,7 +84,9 @@
         <header class="topbar">
 
             <div>
-                <div class="breadcrumb">IACS / Dashboard</div>
+                <div class="breadcrumb">
+                    IACS / Dashboard
+                </div>
 
                 <h1>Energy Control Dashboard</h1>
             </div>
@@ -91,7 +94,6 @@
             <div class="top-status">
                 <span class="live-dot"></span>
                 LIVE
-
                 <span id="clock">00:00:00</span>
             </div>
 
@@ -103,25 +105,27 @@
             <div class="welcome">
 
                 <div>
-                    <span class="eyebrow">INTELLIGENT ENERGY CONTROL</span>
+                    <span class="eyebrow">
+                        INTELLIGENT ENERGY CONTROL
+                    </span>
 
                     <h2>
-                        Good afternoon.
+                        Energy Overview
                     </h2>
 
                     <p>
-                        Monitor and control your EV energy system from one place.
+                        Monitor your EV charging system in real time.
                     </p>
                 </div>
 
-                <a href="battery.html" class="primary-btn">
-                    View Battery →
+                <a href="charging.html" class="primary-btn">
+                    Charging Control →
                 </a>
 
             </div>
 
 
-            <!-- MAIN PARAMETERS -->
+            <!-- PARAMETER CARDS -->
 
             <div class="parameter-grid">
 
@@ -129,7 +133,7 @@
 
                     <div class="card-top">
                         <span>BATTERY SOC</span>
-                        <span class="card-arrow">↗</span>
+                        <span>↗</span>
                     </div>
 
                     <div class="big-value">
@@ -140,7 +144,7 @@
                         <div id="socBar" style="width:78%"></div>
                     </div>
 
-                    <small>Battery charge level</small>
+                    <small>State of charge</small>
 
                 </a>
 
@@ -148,8 +152,8 @@
                 <a href="battery.html" class="parameter-card">
 
                     <div class="card-top">
-                        <span>VOLTAGE</span>
-                        <span class="card-arrow">↗</span>
+                        <span>BATTERY VOLTAGE</span>
+                        <span>↗</span>
                     </div>
 
                     <div class="big-value">
@@ -168,7 +172,7 @@
 
                     <div class="card-top">
                         <span>CHARGING CURRENT</span>
-                        <span class="card-arrow">↗</span>
+                        <span>↗</span>
                     </div>
 
                     <div class="big-value">
@@ -176,7 +180,7 @@
                         <small>A</small>
                     </div>
 
-                    <span class="positive">
+                    <span id="dashboardChargingStatus" class="positive">
                         ● Charging
                     </span>
 
@@ -187,7 +191,7 @@
 
                     <div class="card-top">
                         <span>POWER</span>
-                        <span class="card-arrow">↗</span>
+                        <span>↗</span>
                     </div>
 
                     <div class="big-value">
@@ -196,7 +200,7 @@
                     </div>
 
                     <span class="positive">
-                        ● G2V Active
+                        ● G2V
                     </span>
 
                 </a>
@@ -204,11 +208,11 @@
             </div>
 
 
-            <!-- CHART + POWER FLOW -->
+            <!-- CHART + FLOW -->
 
             <div class="dashboard-grid">
 
-                <div class="panel chart-panel">
+                <div class="panel">
 
                     <div class="panel-header">
 
@@ -217,7 +221,9 @@
                             <h3>Power Performance</h3>
                         </div>
 
-                        <a href="analytics.html">View analytics →</a>
+                        <a href="analytics.html">
+                            Analytics →
+                        </a>
 
                     </div>
 
@@ -233,11 +239,16 @@
                     <div class="panel-header">
 
                         <div>
-                            <span class="eyebrow">ENERGY DIRECTION</span>
+                            <span class="eyebrow">
+                                ENERGY DIRECTION
+                            </span>
+
                             <h3>Power Flow</h3>
                         </div>
 
-                        <a href="energy.html">Details →</a>
+                        <a href="energy.html">
+                            Details →
+                        </a>
 
                     </div>
 
@@ -245,19 +256,37 @@
                     <div class="power-flow">
 
                         <div class="flow-node">
-                            <div class="flow-icon">⚡</div>
+
+                            <div class="flow-icon">
+                                GRID
+                            </div>
+
                             <strong>GRID</strong>
-                            <small>312 W</small>
+
+                            <small>
+                                <span id="gridPower">311</span> W
+                            </small>
+
                         </div>
+
 
                         <div class="flow-line">
-                            <span>→</span>
+                            →
                         </div>
 
+
                         <div class="flow-node">
-                            <div class="flow-icon">EV</div>
+
+                            <div class="flow-icon">
+                                EV
+                            </div>
+
                             <strong>BATTERY</strong>
-                            <small>G2V</small>
+
+                            <small>
+                                G2V
+                            </small>
+
                         </div>
 
                     </div>
@@ -267,10 +296,12 @@
 
                         <span>Current Mode</span>
 
-                        <strong>GRID → VEHICLE</strong>
+                        <strong>
+                            GRID → VEHICLE
+                        </strong>
 
                         <small>
-                            Grid-to-Vehicle energy transfer
+                            Grid-to-Vehicle operation
                         </small>
 
                     </div>
@@ -284,10 +315,13 @@
 
             <div class="section-title">
 
-                <div>
-                    <span class="eyebrow">CONTROL CENTER</span>
-                    <h3>Quick Access</h3>
-                </div>
+                <span class="eyebrow">
+                    CONTROL CENTER
+                </span>
+
+                <h3>
+                    Quick Access
+                </h3>
 
             </div>
 
@@ -295,42 +329,66 @@
             <div class="quick-grid">
 
                 <a href="battery.html" class="quick-card">
+
                     <span>◉</span>
+
                     <div>
                         <strong>Battery</strong>
-                        <small>Health, SOC & voltage</small>
+                        <small>
+                            SOC, voltage, current
+                        </small>
                     </div>
+
                     <b>→</b>
+
                 </a>
 
 
                 <a href="charging.html" class="quick-card">
+
                     <span>⚡</span>
+
                     <div>
                         <strong>Charging</strong>
-                        <small>Control charging parameters</small>
+                        <small>
+                            Power and charging control
+                        </small>
                     </div>
+
                     <b>→</b>
+
                 </a>
 
 
                 <a href="energy.html" class="quick-card">
+
                     <span>⇄</span>
+
                     <div>
                         <strong>Energy Flow</strong>
-                        <small>G2V & V2G operation</small>
+                        <small>
+                            G2V and V2G
+                        </small>
                     </div>
+
                     <b>→</b>
+
                 </a>
 
 
                 <a href="analytics.html" class="quick-card">
+
                     <span>▥</span>
+
                     <div>
                         <strong>Analytics</strong>
-                        <small>Performance history</small>
+                        <small>
+                            System performance
+                        </small>
                     </div>
+
                     <b>→</b>
+
                 </a>
 
             </div>
@@ -342,10 +400,7 @@
 </div>
 
 
-<div id="toast" class="toast">
-    System updated
-</div>
-
+<div id="toast" class="toast"></div>
 
 <script src="script.js"></script>
 
