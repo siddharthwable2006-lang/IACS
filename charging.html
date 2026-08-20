@@ -182,21 +182,36 @@ onclick="adjustCurrent(0.5)"
 </div>
 
 
-<div class="charging-actions">
+<div class="power-control">
 
-<button
-class="start-btn"
-onclick="startCharging()"
->
-START CHARGING
-</button>
+    <div class="power-status">
 
-<button
-class="stop-btn"
-onclick="stopCharging()"
->
-STOP
-</button>
+        <span id="powerIndicator" class="power-dot"></span>
+
+        <div>
+            <strong id="powerText">POWER ON</strong>
+
+            <small id="powerSubtext">
+                Charging system is enabled
+            </small>
+        </div>
+
+    </div>
+
+
+    <button
+        id="powerButton"
+        class="power-btn on"
+        onclick="toggleChargingPower()"
+    >
+
+        <span class="power-symbol">⏻</span>
+
+        <span id="powerButtonText">
+            POWER ON
+        </span>
+
+    </button>
 
 </div>
 
