@@ -1,909 +1,878 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>IACS | Charging Control</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <!-- ================================
-         CHARGING PAGE ADDITIONAL STYLES
-         ================================ -->
-
-    <style>
-
-        /* Charging text sizing */
-
-        .charging-status-grid .panel h3,
-        .charging-control-grid .panel h3,
-        .panel-header h3 {
-            font-size: 20px;
-        }
-
-        .live-parameter strong {
-            font-size: 22px;
-        }
-
-        .live-parameter > span {
-            font-size: 13px;
-        }
-
-
-        /* ================================
-           VOLTAGE CONTROL
-           ================================ */
-
-        .voltage-control-panel {
-            margin-top: 20px;
-        }
-
-        .voltage-value {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin: 20px 0;
-        }
-
-        .voltage-value span {
-            font-size: 54px;
-            font-weight: 700;
-            line-height: 1;
-        }
+<!DOCTYPE html>  <html lang="en">  <head>  <meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+
+<title>IACS | Charging Control</title>  
+
+<link rel="stylesheet" href="style.css">  
+
+<!-- VOLTAGE CONTROL STYLES -->  
+<style>  
+
+    /* Slightly larger text inside charging boxes */  
+    .charging-status-grid .panel h3,  
+    .charging-control-grid .panel h3,  
+    .panel-header h3 {  
+        font-size: 20px;  
+    }  
+
+    .live-parameter strong {  
+        font-size: 22px;  
+    }  
+
+    .live-parameter > span {  
+        font-size: 13px;  
+    }  
+
+    /* ================================  
+       VOLTAGE CONTROL  
+       ================================ */  
+
+    .voltage-control-panel {  
+        margin-top: 20px;  
+    }  
+
+    .voltage-value {  
+        display: flex;  
+        align-items: baseline;  
+        gap: 8px;  
+        margin: 20px 0;  
+    }  
+
+    .voltage-value span {  
+        font-size: 54px;  
+        font-weight: 700;  
+        line-height: 1;  
+    }  
+
+    .voltage-value small {  
+        font-size: 22px;  
+        font-weight: 600;  
+    }  
+
+    .voltage-slider {  
+        width: 100%;  
+        height: 8px;  
+        cursor: pointer;  
+        accent-color: #25d6a0;  
+    }  
+
+    .voltage-range-labels {  
+        display: flex;  
+        justify-content: space-between;  
+        margin-top: 10px;  
+        font-size: 14px;  
+        opacity: 0.75;  
+    }  
+
+    .voltage-adjust {  
+        display: grid;  
+        grid-template-columns: 70px 1fr 70px;  
+        gap: 15px;  
+        align-items: center;  
+        margin-top: 25px;  
+    }  
+
+    .voltage-adjust button {  
+        min-height: 52px;  
+        border-radius: 10px;  
+        cursor: pointer;  
+        font-size: 20px;  
+        font-weight: 700;  
+    }  
+
+    .voltage-minus,  
+    .voltage-plus {  
+        border: 1px solid rgba(37, 214, 160, 0.25);  
+        background: rgba(255, 255, 255, 0.03);  
+        color: #ffffff;  
+    }  
+
+    .voltage-minus:hover,  
+    .voltage-plus:hover {  
+        background: rgba(37, 214, 160, 0.12);  
+    }  
+
+    .apply-voltage-btn {  
+        border: none;  
+        background: #25d6a0;  
+        color: #061c17;  
+        font-weight: 800;  
+        font-size: 14px;  
+        letter-spacing: 0.3px;  
+    }  
 
-        .voltage-value small {
-            font-size: 22px;
-            font-weight: 600;
-        }
+    .apply-voltage-btn:hover {  
+        filter: brightness(1.08);  
+    }  
 
-        .voltage-slider {
-            width: 100%;
-            height: 8px;
-            cursor: pointer;
-            accent-color: #25d6a0;
-        }
+    .voltage-description {  
+        margin-top: 15px;  
+        font-size: 14px;  
+        opacity: 0.7;  
+    }  
 
-        .voltage-range-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 14px;
-            opacity: 0.75;
-        }
+    .voltage-unit-label {  
+        font-size: 16px;  
+    }  
 
-        .voltage-adjust {
-            display: grid;
-            grid-template-columns: 70px 1fr 70px;
-            gap: 15px;
-            align-items: center;
-            margin-top: 25px;
-        }
+    @media (max-width: 700px) {  
 
-        .voltage-adjust button {
-            min-height: 52px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: 700;
-        }
+        .voltage-adjust {  
+            grid-template-columns: 55px 1fr 55px;  
+            gap: 8px;  
+        }  
 
-        .voltage-minus,
-        .voltage-plus {
-            border: 1px solid rgba(37, 214, 160, 0.25);
-            background: rgba(255, 255, 255, 0.03);
-            color: #ffffff;
-        }
+        .voltage-value span {  
+            font-size: 44px;  
+        }  
 
-        .voltage-minus:hover,
-        .voltage-plus:hover {
-            background: rgba(37, 214, 160, 0.12);
-        }
+    }  
 
-        .apply-voltage-btn {
-            border: none;
-            background: #25d6a0;
-            color: #061c17;
-            font-weight: 800;
-            font-size: 14px;
-            letter-spacing: 0.3px;
-        }
+</style>
 
-        .apply-voltage-btn:hover {
-            filter: brightness(1.08);
-        }
+</head>  <body>  <div class="app">  <!-- SIDEBAR -->  
 
-        .voltage-description {
-            margin-top: 15px;
-            font-size: 14px;
-            opacity: 0.7;
-        }
+<aside class="sidebar">  
 
-        .voltage-unit-label {
-            font-size: 16px;
-        }
+    <div class="brand">  
 
+        <div class="brand-icon">I</div>  
 
-        /* ================================
-           MOBILE
-           ================================ */
+        <div>  
+            <h2>IACS</h2>  
+            <span>Intelligent Energy Control</span>  
+        </div>  
 
-        @media (max-width: 700px) {
+    </div>  
 
-            .voltage-adjust {
-                grid-template-columns: 55px 1fr 55px;
-                gap: 8px;
-            }
 
-            .voltage-value span {
-                font-size: 44px;
-            }
+    <nav>  
 
-        }
+        <a href="index.html" class="nav-item">  
+            <span>⌂</span>  
+            Dashboard  
+        </a>  
 
-    </style>
+        <a href="battery.html" class="nav-item">  
+            <span>◉</span>  
+            Battery  
+        </a>  
 
-</head>
+        <a href="charging.html" class="nav-item active">  
+            <span>⚡</span>  
+            Charging  
+        </a>  
 
+        <a href="energy.html" class="nav-item">  
+            <span>⇄</span>  
+            Energy Flow  
+        </a>  
 
-<body>
+        <a href="analytics.html" class="nav-item">  
+            <span>▥</span>  
+            Analytics  
+        </a>  
 
-<div class="app">
+        <a href="system.html" class="nav-item">  
+            <span>⚙</span>  
+            System  
+        </a>  
 
+    </nav>  
 
-    <!-- ================================
-         SIDEBAR
-         ================================ -->
 
-    <aside class="sidebar">
+    <div class="sidebar-bottom">  
 
-        <div class="brand">
+        <div class="connection">  
 
-            <div class="brand-icon">
-                I
-            </div>
+            <span class="status-dot"></span>  
 
-            <div>
+            <div>  
+                <strong>System Online</strong>  
+                <small>Simulation Mode</small>  
+            </div>  
 
-                <h2>
-                    IACS
-                </h2>
+        </div>  
 
-                <span>
-                    Intelligent Energy Control
-                </span>
+    </div>  
 
-            </div>
+</aside>  
 
-        </div>
 
+<!-- MAIN -->  
 
-        <nav>
+<main class="main">  
 
-            <a href="index.html" class="nav-item">
-                <span>⌂</span>
-                Dashboard
-            </a>
 
+    <header class="topbar">  
 
-            <a href="battery.html" class="nav-item">
-                <span>◉</span>
-                Battery
-            </a>
+        <div>  
 
+            <div class="breadcrumb">  
+                IACS / Charging  
+            </div>  
 
-            <a href="charging.html" class="nav-item active">
-                <span>⚡</span>
-                Charging
-            </a>
+            <h1>  
+                Charging Control  
+            </h1>  
 
+        </div>  
 
-            <a href="energy.html" class="nav-item">
-                <span>⇄</span>
-                Energy Flow
-            </a>
 
+        <div class="top-status">  
 
-            <a href="analytics.html" class="nav-item">
-                <span>▥</span>
-                Analytics
-            </a>
+            <span class="live-dot"></span>  
 
+            LIVE  
 
-            <a href="system.html" class="nav-item">
-                <span>⚙</span>
-                System
-            </a>
+            <span id="clock">  
+                00:00:00  
+            </span>  
 
-        </nav>
+        </div>  
 
+    </header>  
 
-        <div class="sidebar-bottom">
 
-            <div class="connection">
+    <section class="content">  
 
-                <span class="status-dot"></span>
 
-                <div>
+        <div class="page-intro">  
 
-                    <strong>
-                        System Online
-                    </strong>
+            <span class="eyebrow">  
+                EV CHARGING MANAGEMENT  
+            </span>  
 
-                    <small>
-                        Simulation Mode
-                    </small>
+            <h2>  
+                Charging Control  
+            </h2>  
 
-                </div>
+            <p>  
+                Control charging power, start or stop charging,  
+                and adjust the current setpoint.  
+            </p>  
 
-            </div>
+        </div>  
 
-        </div>
 
-    </aside>
+        <!-- POWER + CHARGING STATUS -->  
 
+        <div class="charging-status-grid">  
 
-    <!-- ================================
-         MAIN CONTENT
-         ================================ -->
 
-    <main class="main">
+            <!-- POWER -->  
 
+            <div class="panel">  
 
-        <!-- TOP BAR -->
+                <div class="panel-header">  
 
-        <header class="topbar">
+                    <div>  
 
-            <div>
+                        <span class="eyebrow">  
+                            MASTER POWER  
+                        </span>  
 
-                <div class="breadcrumb">
-                    IACS / Charging
-                </div>
+                        <h3>  
+                            Charging Power  
+                        </h3>  
 
-                <h1>
-                    Charging Control
-                </h1>
+                    </div>  
 
-            </div>
+                    <span id="powerStateBadge"  
+                          class="state-badge on">  
+                        ON  
+                    </span>  
 
+                </div>  
 
-            <div class="top-status">
 
-                <span class="live-dot"></span>
+                <div class="master-power">  
 
-                LIVE
+                    <div class="power-indicator">  
 
-                <span id="clock">
-                    00:00:00
-                </span>
+                        <span id="powerIndicator"  
+                              class="power-light on">  
+                        </span>  
 
-            </div>
+                        <div>  
 
-        </header>
+                            <strong id="powerText">  
+                                POWER ON  
+                            </strong>  
 
+                            <small id="powerSubtext">  
+                                Charging system is enabled  
+                            </small>  
 
-        <section class="content">
+                        </div>  
 
+                    </div>  
 
-            <!-- ================================
-                 PAGE INTRO
-                 ================================ -->
 
-            <div class="page-intro">
+                    <button  
+                        id="powerButton"  
+                        class="power-btn on"  
+                        onclick="toggleChargingPower()"  
+                    >  
 
-                <span class="eyebrow">
-                    EV CHARGING MANAGEMENT
-                </span>
+                        <span class="power-symbol">  
+                            ⏻  
+                        </span>  
 
-                <h2>
-                    Charging Control
-                </h2>
+                        <span id="powerButtonText">  
+                            POWER OFF  
+                        </span>  
 
-                <p>
-                    Control charging power, start or stop charging,
-                    and adjust the current and voltage setpoints.
-                </p>
+                    </button>  
 
-            </div>
+                </div>  
 
+            </div>  
 
-            <!-- ================================
-                 POWER + CHARGING STATUS
-                 ================================ -->
 
-            <div class="charging-status-grid">
+            <!-- CHARGING STATUS -->  
 
+            <div class="panel">  
 
-                <!-- POWER CONTROL -->
+                <div class="panel-header">  
 
-                <div class="panel">
+                    <div>  
 
-                    <div class="panel-header">
+                        <span class="eyebrow">  
+                            CHARGING STATE  
+                        </span>  
 
-                        <div>
+                        <h3>  
+                            Operation  
+                        </h3>  
 
-                            <span class="eyebrow">
-                                MASTER POWER
-                            </span>
+                    </div>  
 
-                            <h3>
-                                Charging Power
-                            </h3>
+                    <span id="chargingStateBadge"  
+                          class="state-badge active">  
+                        CHARGING  
+                    </span>  
 
-                        </div>
+                </div>  
 
 
-                        <span
-                            id="powerStateBadge"
-                            class="state-badge on">
+                <div class="operation-status">  
 
-                            ON
+                    <div class="operation-icon">  
+                        ⚡  
+                    </div>  
 
-                        </span>
+                    <div>  
 
-                    </div>
+                        <strong id="statusText">  
+                            Charging Active  
+                        </strong>  
 
+                        <small id="statusSubtext">  
+                            Energy is being delivered  
+                            to the vehicle  
+                        </small>  
 
-                    <div class="master-power">
+                    </div>  
 
-                        <div class="power-indicator">
+                </div>  
 
-                            <span
-                                id="powerIndicator"
-                                class="power-light on">
-                            </span>
 
+                <!-- START STOP -->  
 
-                            <div>
+                <div class="start-stop-buttons">  
 
-                                <strong id="powerText">
-                                    POWER ON
-                                </strong>
+                    <button  
+                        id="startButton"  
+                        class="start-btn active"  
+                        onclick="startCharging()"  
+                    >  
 
-                                <small id="powerSubtext">
-                                    Charging system is enabled
-                                </small>
+                        ▶  
+                        START CHARGING  
 
-                            </div>
+                    </button>  
 
-                        </div>
 
+                    <button  
+                        id="stopButton"  
+                        class="stop-btn"  
+                        onclick="stopCharging()"  
+                    >  
 
-                        <button
-                            id="powerButton"
-                            class="power-btn on"
-                            onclick="toggleChargingPower()"
-                        >
+                        ■  
+                        STOP CHARGING  
 
-                            <span class="power-symbol">
-                                ⏻
-                            </span>
+                    </button>  
 
-                            <span id="powerButtonText">
-                                POWER OFF
-                            </span>
+                </div>  
 
-                        </button>
+            </div>  
 
-                    </div>
+        </div>  
 
-                </div>
 
+        <!-- CURRENT CONTROL + LIVE PARAMETERS -->  
 
-                <!-- CHARGING STATUS -->
+        <div class="charging-control-grid">  
 
-                <div class="panel">
 
-                    <div class="panel-header">
+            <!-- CURRENT CONTROL -->  
 
-                        <div>
+            <div class="panel">  
 
-                            <span class="eyebrow">
-                                CHARGING STATE
-                            </span>
+                <div class="panel-header">  
 
-                            <h3>
-                                Operation
-                            </h3>
+                    <div>  
 
-                        </div>
+                        <span class="eyebrow">  
+                            CURRENT SETPOINT  
+                        </span>  
 
+                        <h3>  
+                            Charging Current  
+                        </h3>  
 
-                        <span
-                            id="chargingStateBadge"
-                            class="state-badge active">
+                    </div>  
 
-                            CHARGING
+                    <span class="unit-label">  
+                        0–10 A  
+                    </span>  
 
-                        </span>
+                </div>  
 
-                    </div>
 
+                <div class="charging-value">  
 
-                    <div class="operation-status">
+                    <span id="chargingCurrent">  
+                        6.4  
+                    </span>  
 
-                        <div class="operation-icon">
-                            ⚡
-                        </div>
+                    <small>  
+                        A  
+                    </small>  
 
+                </div>  
 
-                        <div>
 
-                            <strong id="statusText">
-                                Charging Active
-                            </strong>
+                <input  
+                    type="range"  
+                    id="currentSlider"  
+                    min="0"  
+                    max="10"  
+                    step="0.1"  
+                    value="6.4"  
+                >  
 
-                            <small id="statusSubtext">
-                                Energy is being delivered to the vehicle
-                            </small>
 
-                        </div>
+                <div class="range-labels">  
 
-                    </div>
+                    <span>  
+                        0 A  
+                    </span>  
 
+                    <span>  
+                        5 A  
+                    </span>  
 
-                    <!-- START / STOP -->
+                    <span>  
+                        10 A  
+                    </span>  
 
-                    <div class="start-stop-buttons">
+                </div>  
 
 
-                        <button
-                            id="startButton"
-                            class="start-btn active"
-                            onclick="startCharging()"
-                        >
+                <div class="current-adjust">  
 
-                            ▶
-                            START CHARGING
+                    <button  
+                        class="secondary-btn"  
+                        onclick="adjustCurrent(-0.5)"  
+                    >  
+                        −  
+                    </button>  
 
-                        </button>
 
+                    <button  
+                        class="primary-btn"  
+                        onclick="applyCharging()"  
+                    >  
+                        APPLY SETPOINT  
+                    </button>  
 
-                        <button
-                            id="stopButton"
-                            class="stop-btn"
-                            onclick="stopCharging()"
-                        >
 
-                            ■
-                            STOP CHARGING
+                    <button  
+                        class="secondary-btn"  
+                        onclick="adjustCurrent(0.5)"  
+                    >  
+                        +  
+                    </button>  
 
-                        </button>
+                </div>  
 
-                    </div>
+            </div>  
 
-                </div>
 
-            </div>
+            <!-- LIVE PARAMETERS -->
 
+<!-- VOLTAGE CONTROL -->  <div class="panel">  <div class="panel-header">  
 
-            <!-- ================================
-                 CURRENT CONTROL
-                 ================================ -->
+    <div>  
 
-            <div class="charging-control-grid">
+        <span class="eyebrow">  
+            VOLTAGE SETPOINT  
+        </span>  
 
+        <h3>  
+            Charging Voltage  
+        </h3>  
 
-                <div class="panel">
+    </div>  
 
-                    <div class="panel-header">
+    <span class="unit-label">  
+        40–60 V  
+    </span>  
 
-                        <div>
+</div>  
 
-                            <span class="eyebrow">
-                                CURRENT SETPOINT
-                            </span>
 
-                            <h3>
-                                Charging Current
-                            </h3>
+<div class="charging-value">  
 
-                        </div>
+    <span id="voltageSetpoint">  
+        48.6  
+    </span>  
 
+    <small>  
+        V  
+    </small>  
 
-                        <span class="unit-label">
-                            0–10 A
-                        </span>
+</div>  
 
-                    </div>
 
+<input  
+    type="range"  
+    id="voltageSlider"  
+    min="40"  
+    max="60"  
+    step="0.1"  
+    value="48.6"  
+>  
 
-                    <div class="charging-value">
 
-                        <span id="chargingCurrent">
-                            6.4
-                        </span>
+<div class="range-labels">  
 
-                        <small>
-                            A
-                        </small>
+    <span>  
+        40 V  
+    </span>  
 
-                    </div>
+    <span>  
+        50 V  
+    </span>  
 
+    <span>  
+        60 V  
+    </span>  
 
-                    <input
-                        type="range"
-                        id="currentSlider"
-                        min="0"
-                        max="10"
-                        step="0.1"
-                        value="6.4"
-                    >
+</div>  
 
 
-                    <div class="range-labels">
+<div class="current-adjust">  
 
-                        <span>
-                            0 A
-                        </span>
+    <button  
+        type="button"  
+        id="voltageDecrease"  
+        class="secondary-btn"  
+    >  
+        −  
+    </button>  
 
-                        <span>
-                            5 A
-                        </span>
 
-                        <span>
-                            10 A
-                        </span>
+    <button  
+        type="button"  
+        id="applyVoltageButton"  
+        class="primary-btn"  
+    >  
+        APPLY VOLTAGE  
+    </button>  
 
-                    </div>
 
+    <button  
+        type="button"  
+        id="voltageIncrease"  
+        class="secondary-btn"  
+    >  
+        +  
+    </button>  
 
-                    <div class="current-adjust">
+</div>
 
+</div>  <div class="panel">  
 
-                        <button
-                            class="secondary-btn"
-                            onclick="adjustCurrent(-0.5)"
-                        >
+                <div class="panel-header">  
 
-                            −
+                    <div>  
 
-                        </button>
+                        <span class="eyebrow">  
+                            LIVE PARAMETERS  
+                        </span>  
 
+                        <h3>  
+                            Charging Data  
+                        </h3>  
 
-                        <button
-                            class="primary-btn"
-                            onclick="applyCharging()"
-                        >
+                    </div>  
 
-                            APPLY SETPOINT
+                </div>  
 
-                        </button>
 
+                <div class="live-parameter-grid">  
 
-                        <button
-                            class="secondary-btn"
-                            onclick="adjustCurrent(0.5)"
-                        >
+                    <div class="live-parameter">  
 
-                            +
+                        <span>  
+                            VOLTAGE  
+                        </span>  
 
-                        </button>
+                        <strong>  
+                            <span id="chargingVoltage">  
+                                48.6  
+                            </span>  
+                            <small>V</small>  
+                        </strong>  
 
-                    </div>
+                    </div>  
 
-                </div>
 
-            </div>
+                    <div class="live-parameter">  
 
+                        <span>  
+                            CURRENT  
+                        </span>  
 
-            <!-- ================================
-                 VOLTAGE CONTROL
-                 ONLY ONE VOLTAGE CONTROL
-                 ================================ -->
+                        <strong>  
+                            <span id="liveCurrent">  
+                                6.4  
+                            </span>  
+                            <small>A</small>  
+                        </strong>  
 
-            <div class="panel voltage-control-panel">
+                    </div>  
 
 
-                <div class="panel-header">
+                    <div class="live-parameter">  
 
-                    <div>
+                        <span>  
+                            POWER  
+                        </span>  
 
-                        <span class="eyebrow">
-                            VOLTAGE SETPOINT
-                        </span>
+                        <strong>  
+                            <span id="chargingPower">  
+                                311  
+                            </span>  
+                            <small>W</small>  
+                        </strong>  
 
-                        <h3>
-                            Charging Voltage
-                        </h3>
+                    </div>  
 
-                    </div>
 
+                    <div class="live-parameter">  
 
-                    <span class="voltage-unit-label">
-                        40–60 V
-                    </span>
+                        <span>  
+                            SOC  
+                        </span>  
 
-                </div>
+                        <strong>  
+                            <span id="chargingSOC">  
+                                78  
+                            </span>  
+                            <small>%</small>  
+                        </strong>  
 
+                    </div>  
 
-                <!-- VOLTAGE VALUE -->
+                </div>  
 
-                <div class="voltage-value">
+            </div>  
 
-                    <span id="voltageSetpoint">
-                        48.6
-                    </span>
+        </div>  
 
-                    <small>
-                        V
-                    </small>
 
-                </div>
+        <!-- =========================================  
+             NEW VOLTAGE CONTROL  
+             ========================================= -->  
 
+        <div class="panel voltage-control-panel">  
 
-                <!-- VOLTAGE SLIDER -->
+            <div class="panel-header">  
 
-                <input
-                    type="range"
-                    id="voltageSlider"
-                    class="voltage-slider"
-                    min="40"
-                    max="60"
-                    step="0.1"
-                    value="48.6"
-                >
+                <div>  
 
+                    <span class="eyebrow">  
+                        VOLTAGE SETPOINT  
+                    </span>  
 
-                <!-- VOLTAGE RANGE -->
+                    <h3>  
+                        Charging Voltage  
+                    </h3>  
 
-                <div class="voltage-range-labels">
+                </div>  
 
-                    <span>
-                        40 V
-                    </span>
+                <span class="voltage-unit-label">  
+                    40–60 V  
+                </span>  
 
-                    <span>
-                        50 V
-                    </span>
+            </div>  
 
-                    <span>
-                        60 V
-                    </span>
 
-                </div>
+            <!-- VOLTAGE VALUE -->  
 
+            <div class="voltage-value">  
 
-                <!-- VOLTAGE BUTTONS -->
+                <span id="voltageSetpoint">  
+                    48.6  
+                </span>  
 
-                <div class="voltage-adjust">
+                <small>  
+                    V  
+                </small>  
 
+            </div>  
 
-                    <button
-                        type="button"
-                        id="voltageDecrease"
-                        class="voltage-minus"
-                        onclick="adjustVoltage(-0.5)"
-                        aria-label="Decrease voltage"
-                    >
 
-                        −
+            <!-- VOLTAGE SLIDER -->  
 
-                    </button>
+            <input  
+                type="range"  
+                id="voltageSlider"  
+                class="voltage-slider"  
+                min="40"  
+                max="60"  
+                step="0.1"  
+                value="48.6"  
+            >  
 
 
-                    <button
-                        type="button"
-                        id="applyVoltageButton"
-                        class="apply-voltage-btn"
-                        onclick="applyVoltage()"
-                    >
+            <!-- RANGE LABELS -->  
 
-                        APPLY VOLTAGE
+            <div class="voltage-range-labels">  
 
-                    </button>
+                <span>  
+                    40 V  
+                </span>  
 
+                <span>  
+                    50 V  
+                </span>  
 
-                    <button
-                        type="button"
-                        id="voltageIncrease"
-                        class="voltage-plus"
-                        onclick="adjustVoltage(0.5)"
-                        aria-label="Increase voltage"
-                    >
+                <span>  
+                    60 V  
+                </span>  
 
-                        +
+            </div>  
 
-                    </button>
 
-                </div>
+            <!-- VOLTAGE BUTTONS -->  
 
+            <div class="voltage-adjust">  
 
-                <div class="voltage-description">
+                <button  
+                    type="button"  
+                    class="voltage-minus"  
+                    onclick="adjustVoltage(-0.5)"  
+                    aria-label="Decrease voltage"  
+                >  
+                    −  
+                </button>  
 
-                    Adjust the charging voltage setpoint between
-                    40 V and 60 V.
 
-                </div>
+                <button  
+                    type="button"  
+                    class="apply-voltage-btn"  
+                    onclick="applyVoltage()"  
+                >  
+                    APPLY VOLTAGE  
+                </button>  
 
-            </div>
 
+                <button  
+                    type="button"  
+                    class="voltage-plus"  
+                    onclick="adjustVoltage(0.5)"  
+                    aria-label="Increase voltage"  
+                >  
+                    +  
+                </button>  
 
-            <!-- ================================
-                 LIVE PARAMETERS
-                 ================================ -->
+            </div>  
 
-            <div class="panel">
 
+            <div class="voltage-description">  
+                Adjust the charging voltage setpoint between  
+                40 V and 60 V.  
+            </div>  
 
-                <div class="panel-header">
+        </div>  
 
-                    <div>
 
-                        <span class="eyebrow">
-                            LIVE PARAMETERS
-                        </span>
+        <!-- CONTROL LOGIC -->  
 
-                        <h3>
-                            Charging Data
-                        </h3>
+        <div class="panel">  
 
-                    </div>
+            <div class="panel-header">  
 
-                </div>
+                <div>  
 
+                    <span class="eyebrow">  
+                        CONTROL LOGIC  
+                    </span>  
 
-                <div class="live-parameter-grid">
+                    <h3>  
+                        Charging Sequence  
+                    </h3>  
 
+                </div>  
 
-                    <!-- VOLTAGE -->
+            </div>  
 
-                    <div class="live-parameter">
 
-                        <span>
-                            VOLTAGE
-                        </span>
+            <div class="charging-sequence">  
 
-                        <strong>
+                <div class="sequence-item completed">  
 
-                            <span id="chargingVoltage">
-                                48.6
-                            </span>
+                    <span>01</span>  
 
-                            <small>
-                                V
-                            </small>
+                    <div>  
 
-                        </strong>
+                        <strong>  
+                            Power Enabled  
+                        </strong>  
 
-                    </div>
+                        <small>  
+                            Master charging supply is ON  
+                        </small>  
 
+                    </div>  
 
-                    <!-- CURRENT -->
+                </div>  
 
-                    <div class="live-parameter">
 
-                        <span>
-                            CURRENT
-                        </span>
+                <div class="sequence-line"></div>  
 
-                        <strong>
 
-                            <span id="liveCurrent">
-                                6.4
-                            </span>
+                <div id="sequenceStart"  
+                     class="sequence-item completed">  
 
-                            <small>
-                                A
-                            </small>
+                    <span>02</span>  
 
-                        </strong>
+                    <div>  
 
-                    </div>
+                        <strong>  
+                            Charging Started  
+                        </strong>  
 
+                        <small>  
+                            Charging command is active  
+                        </small>  
 
-                    <!-- POWER -->
+                    </div>  
 
-                    <div class="live-parameter">
-
-                        <span>
-                            POWER
-                        </span>
-
-                        <strong>
-
-                            <span id="chargingPower">
-                                311
-                            </span>
-
-                            <small>
-                                W
-                            </small>
-
-                        </strong>
-
-                    </div>
-
-
-                    <!-- SOC -->
-
-                    <div class="live-parameter">
-
-                        <span>
-                            SOC
-                        </span>
-
-                        <strong>
-
-                            <span id="chargingSOC">
-                                78
-                            </span>
-
-                            <small>
-                                %
-                            </small>
-
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================================
-                 CONTROL LOGIC
-                 ================================ -->
-
-            <div class="panel">
-
-
-                <div class="panel-header">
-
-                    <div>
-
-                        <span class="eyebrow">
-                            CONTROL LOGIC
-                        </span>
-
-                        <h3>
-                            Charging Sequence
-                        </h3>
-
-                    </div>
-
-                </div>
-
-
-                <div class="charging-sequence">
-
-
-                    <!-- STEP 1 -->
-
-                    <div class="sequence-item completed">
-
-                        <span>
-                            01
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Power Enabled
-                            </strong>
-
-                            <small>
-                                Master charging supply is ON
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="sequence-line"></div>
-
-
-                    <!-- STEP 2 -->
-
-                    <div
-                        id="sequenceStart"
-                        class="sequence-item completed"
-                    >
-
-                        <span>
-                            02
-                        </span>
+                </div
