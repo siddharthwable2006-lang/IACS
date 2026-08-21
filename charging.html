@@ -10,6 +10,131 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <!-- VOLTAGE CONTROL STYLES -->
+    <style>
+
+        /* Slightly larger text inside charging boxes */
+        .charging-status-grid .panel h3,
+        .charging-control-grid .panel h3,
+        .panel-header h3 {
+            font-size: 20px;
+        }
+
+        .live-parameter strong {
+            font-size: 22px;
+        }
+
+        .live-parameter > span {
+            font-size: 13px;
+        }
+
+        /* ================================
+           VOLTAGE CONTROL
+           ================================ */
+
+        .voltage-control-panel {
+            margin-top: 20px;
+        }
+
+        .voltage-value {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .voltage-value span {
+            font-size: 54px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .voltage-value small {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .voltage-slider {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            accent-color: #25d6a0;
+        }
+
+        .voltage-range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0.75;
+        }
+
+        .voltage-adjust {
+            display: grid;
+            grid-template-columns: 70px 1fr 70px;
+            gap: 15px;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .voltage-adjust button {
+            min-height: 52px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .voltage-minus,
+        .voltage-plus {
+            border: 1px solid rgba(37, 214, 160, 0.25);
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+        }
+
+        .voltage-minus:hover,
+        .voltage-plus:hover {
+            background: rgba(37, 214, 160, 0.12);
+        }
+
+        .apply-voltage-btn {
+            border: none;
+            background: #25d6a0;
+            color: #061c17;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .apply-voltage-btn:hover {
+            filter: brightness(1.08);
+        }
+
+        .voltage-description {
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .voltage-unit-label {
+            font-size: 16px;
+        }
+
+        @media (max-width: 700px) {
+
+            .voltage-adjust {
+                grid-template-columns: 55px 1fr 55px;
+                gap: 8px;
+            }
+
+            .voltage-value span {
+                font-size: 44px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -300,10 +425,12 @@
             </div>
 
 
-            <!-- CURRENT CONTROL -->
+            <!-- CURRENT CONTROL + LIVE PARAMETERS -->
 
             <div class="charging-control-grid">
 
+
+                <!-- CURRENT CONTROL -->
 
                 <div class="panel">
 
@@ -491,6 +618,123 @@
             </div>
 
 
+            <!-- =========================================
+                 NEW VOLTAGE CONTROL
+                 ========================================= -->
+
+            <div class="panel voltage-control-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            VOLTAGE SETPOINT
+                        </span>
+
+                        <h3>
+                            Charging Voltage
+                        </h3>
+
+                    </div>
+
+                    <span class="voltage-unit-label">
+                        40–60 V
+                    </span>
+
+                </div>
+
+
+                <!-- VOLTAGE VALUE -->
+
+                <div class="voltage-value">
+
+                    <span id="voltageSetpoint">
+                        48.6
+                    </span>
+
+                    <small>
+                        V
+                    </small>
+
+                </div>
+
+
+                <!-- VOLTAGE SLIDER -->
+
+                <input
+                    type="range"
+                    id="voltageSlider"
+                    class="voltage-slider"
+                    min="40"
+                    max="60"
+                    step="0.1"
+                    value="48.6"
+                >
+
+
+                <!-- RANGE LABELS -->
+
+                <div class="voltage-range-labels">
+
+                    <span>
+                        40 V
+                    </span>
+
+                    <span>
+                        50 V
+                    </span>
+
+                    <span>
+                        60 V
+                    </span>
+
+                </div>
+
+
+                <!-- VOLTAGE BUTTONS -->
+
+                <div class="voltage-adjust">
+
+                    <button
+                        type="button"
+                        class="voltage-minus"
+                        onclick="adjustVoltage(-0.5)"
+                        aria-label="Decrease voltage"
+                    >
+                        −
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="apply-voltage-btn"
+                        onclick="applyVoltage()"
+                    >
+                        APPLY VOLTAGE
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="voltage-plus"
+                        onclick="adjustVoltage(0.5)"
+                        aria-label="Increase voltage"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <div class="voltage-description">
+                    Adjust the charging voltage setpoint between
+                    40 V and 60 V.
+                </div>
+
+            </div>
+
+
             <!-- CONTROL LOGIC -->
 
             <div class="panel">
@@ -589,25 +833,29 @@
 </div>
 
 
+<!-- TOAST -->
+
 <div id="toast" class="toast"></div>
 
 
+<!-- =========================================
+     VOLTAGE CONTROL JAVASCRIPT
+     ========================================= -->
 
-
-
-
-
-
-
-
-    <script>
+<script>
 
     /* ================================
        VOLTAGE CONTROL
        ================================ */
 
-    const voltageSlider = document.getElementById("voltageSlider");
-    const voltageSetpoint = document.getElementById("voltageSetpoint");
+    const voltageSlider =
+        document.getElementById("voltageSlider");
+
+    const voltageSetpoint =
+        document.getElementById("voltageSetpoint");
+
+
+    /* Update displayed voltage when slider moves */
 
     if (voltageSlider && voltageSetpoint) {
 
@@ -621,19 +869,44 @@
     }
 
 
+    /* ================================
+       PLUS / MINUS VOLTAGE BUTTONS
+       ================================ */
+
     function adjustVoltage(amount) {
 
-        if (!voltageSlider || !voltageSetpoint) return;
+        if (!voltageSlider || !voltageSetpoint) {
+            return;
+        }
 
-        let value = parseFloat(voltageSlider.value);
+        let value =
+            parseFloat(voltageSlider.value);
+
+        if (isNaN(value)) {
+            value = 48.6;
+        }
 
         value += amount;
 
-        value = Math.max(40, Math.min(60, value));
 
-        value = Math.round(value * 10) / 10;
+        /* Keep voltage between 40 and 60 V */
+
+        value =
+            Math.max(40, Math.min(60, value));
+
+
+        /* Keep one decimal place */
+
+        value =
+            Math.round(value * 10) / 10;
+
+
+        /* Update slider */
 
         voltageSlider.value = value;
+
+
+        /* Update displayed number */
 
         voltageSetpoint.textContent =
             value.toFixed(1);
@@ -641,42 +914,66 @@
     }
 
 
+    /* ================================
+       APPLY VOLTAGE
+       ================================ */
+
     function applyVoltage() {
 
-        if (!voltageSlider) return;
+        if (!voltageSlider || !voltageSetpoint) {
+            return;
+        }
 
         const value =
-            parseFloat(voltageSlider.value).toFixed(1);
+            parseFloat(voltageSlider.value)
+            .toFixed(1);
+
 
         voltageSetpoint.textContent = value;
+
+
+        showVoltageToast(
+            "✓ Voltage setpoint updated to " +
+            value +
+            " V"
+        );
+
+    }
+
+
+    /* ================================
+       VOLTAGE TOAST
+       ================================ */
+
+    function showVoltageToast(message) {
 
         const toast =
             document.getElementById("toast");
 
-        if (toast) {
-
-            toast.textContent =
-                "✓ Voltage setpoint updated to " +
-                value +
-                " V";
-
-            toast.classList.add("show");
-
-            setTimeout(function () {
-                toast.classList.remove("show");
-            }, 2500);
-
+        if (!toast) {
+            return;
         }
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+
+        setTimeout(function () {
+
+            toast.classList.remove("show");
+
+        }, 2500);
 
     }
 
 </script>
 
 
+<!-- EXISTING MAIN JAVASCRIPT -->
 
-
-    
 <script src="script.js"></script>
+
 
 </body>
 </html>
