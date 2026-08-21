@@ -587,6 +587,214 @@ function adjustCurrent(amount) {
 
 }
 
+/* =========================================================
+   VOLTAGE CONTROL
+   ONLY VOLTAGE CONTROL - DO NOT AFFECT OTHER PARAMETERS
+========================================================= */
+
+const voltageSlider =
+    document.getElementById(
+        "voltageSlider"
+    );
+
+const voltageSetpointDisplay =
+    document.getElementById(
+        "voltageSetpoint"
+    );
+
+const voltageDecrease =
+    document.getElementById(
+        "voltageDecrease"
+    );
+
+const voltageIncrease =
+    document.getElementById(
+        "voltageIncrease"
+    );
+
+const applyVoltageButton =
+    document.getElementById(
+        "applyVoltageButton"
+    );
+
+
+/* =========================================================
+   UPDATE VOLTAGE SETPOINT DISPLAY
+========================================================= */
+
+function updateVoltageSetpointDisplay() {
+
+    if (voltageSetpointDisplay) {
+
+        voltageSetpointDisplay.textContent =
+            voltageSetpoint.toFixed(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   VOLTAGE SLIDER
+========================================================= */
+
+if (voltageSlider) {
+
+    voltageSlider.addEventListener(
+        "input",
+        function () {
+
+            voltageSetpoint =
+                Number(this.value);
+
+            voltageSetpoint =
+                Math.max(
+                    40,
+                    Math.min(
+                        60,
+                        voltageSetpoint
+                    )
+                );
+
+            updateVoltageSetpointDisplay();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VOLTAGE MINUS BUTTON
+========================================================= */
+
+if (voltageDecrease) {
+
+    voltageDecrease.addEventListener(
+        "click",
+        function () {
+
+            voltageSetpoint -= 0.5;
+
+
+            voltageSetpoint =
+                Math.max(
+                    40,
+                    voltageSetpoint
+                );
+
+
+            voltageSetpoint =
+                Math.round(
+                    voltageSetpoint * 10
+                ) / 10;
+
+
+            if (voltageSlider) {
+
+                voltageSlider.value =
+                    voltageSetpoint;
+
+            }
+
+
+            updateVoltageSetpointDisplay();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VOLTAGE PLUS BUTTON
+========================================================= */
+
+if (voltageIncrease) {
+
+    voltageIncrease.addEventListener(
+        "click",
+        function () {
+
+            voltageSetpoint += 0.5;
+
+
+            voltageSetpoint =
+                Math.min(
+                    60,
+                    voltageSetpoint
+                );
+
+
+            voltageSetpoint =
+                Math.round(
+                    voltageSetpoint * 10
+                ) / 10;
+
+
+            if (voltageSlider) {
+
+                voltageSlider.value =
+                    voltageSetpoint;
+
+            }
+
+
+            updateVoltageSetpointDisplay();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   APPLY VOLTAGE
+========================================================= */
+
+if (applyVoltageButton) {
+
+    applyVoltageButton.addEventListener(
+        "click",
+        function () {
+
+            if (!chargingPowerOn) {
+
+                showToast(
+                    "Power is OFF. Turn it ON first."
+                );
+
+                return;
+
+            }
+
+
+            showToast(
+                "Voltage setpoint applied: " +
+                voltageSetpoint.toFixed(1) +
+                " V"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIAL VOLTAGE SETPOINT
+========================================================= */
+
+if (voltageSlider) {
+
+    voltageSlider.value =
+        voltageSetpoint;
+
+}
+
+
+updateVoltageSetpointDisplay();
+
 
 
 /* =========================================================
