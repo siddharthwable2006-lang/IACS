@@ -1,750 +1,406 @@
 /* =========================================================
-   IACS V2
-   Intelligent EV Charging System
-========================================================= */
+   IACS - MAIN JAVASCRIPT
+   ========================================================= */
 
+document.addEventListener("DOMContentLoaded", function () {
 
-/* ================= STATE ================= */
+    /* =====================================================
+       CLOCK
+       ===================================================== */
 
-const state = {
+    const clock = document.getElementById("clock");
 
-    voltage: 48.0,
+    function updateClock() {
 
-    current: 6.4,
+        if (!clock) return;
 
-    soc: 78,
+        const now = new Date();
 
-    charging: false,
+        clock.textContent =
+            now.toLocaleTimeString("en-GB", {
+                hour12: false
+            });
+    }
 
-    mode: "G2V",
+    updateClock();
 
-    power: 0
+    setInterval(updateClock, 1000);
 
-};
 
+    /* =====================================================
+       SIMULATION VALUES
+       ===================================================== */
 
-/* ================= ELEMENTS ================= */
+    let systemData = {
 
-const voltageSlider =
-    document.getElementById("voltageSlider");
+        soc: 78,
+        soh: 94,
 
-const currentSlider =
-    document.getElementById("currentSlider");
+        batteryTemp: 31.5,
 
+        inputVoltage: 230.0,
+        inputCurrent: 1.35,
 
-/* ================= CLOCK ================= */
+        outputVoltage: 48.6,
+        outputCurrent: 6.4,
 
-function updateClock() {
+        power: 311,
 
-    const now = new Date();
+        charging: true,
+        powerEnabled: true
 
-    const time =
-        now.toLocaleTimeString([], {
-            hour12: false
-        });
+    };
 
-    document.getElementById("clock")
-        .textContent = time;
-}
 
+    /* =====================================================
+       HELPER
+       ===================================================== */
 
-setInterval(updateClock, 1000);
+    function setText(id, value) {
 
-updateClock();
+        const element = document.getElementById(id);
 
+        if (element) {
+            element.textContent = value;
+        }
+    }
 
-/* =========================================================
-   UPDATE UI
-========================================================= */
 
-function updateUI() {
+    /* =====================================================
+       UPDATE DASHBOARD
+       ===================================================== */
 
-    /* POWER */
+    function updateDashboard() {
 
-    state.power =
-        state.charging
-            ? state.voltage * state.current
-            : 0;
+        setText("soc", Math.round(systemData.soc));
+        setText("soh", Math.round(systemData.soh));
 
+        setText(
+            "batteryTemp",
+            systemData.batteryTemp.toFixed(1)
+        );
 
-    /* MAIN METRICS */
+        setText(
+            "inputVoltage",
+            systemData.inputVoltage.toFixed(1)
+        );
 
-    document.getElementById("socValue")
-        .textContent = Math.round(state.soc);
+        setText(
+            "inputCurrent",
+            systemData.inputCurrent.toFixed(2)
+        );
 
-    document.getElementById("bigSoc")
-        .textContent =
-        Math.round(state.soc) + "%";
+        setText(
+            "outputVoltage",
+            systemData.outputVoltage.toFixed(1)
+        );
 
-    document.getElementById("socBar")
-        .style.width =
-        state.soc + "%";
+        setText(
+            "outputCurrent",
+            systemData.outputCurrent.toFixed(1)
+        );
 
-
-    document.getElementById("voltageValue")
-        .textContent =
-        state.voltage.toFixed(1);
-
-
-    document.getElementById("currentValue")
-        .textContent =
-        state.current.toFixed(1);
-
-
-    document.getElementById("powerValue")
-        .textContent =
-        Math.round(state.power);
-
-
-    /* CONTROL VALUES */
-
-    document.getElementById("targetVoltage")
-        .textContent =
-        state.voltage.toFixed(1);
-
-
-    document.getElementById("targetCurrent")
-        .textContent =
-        state.current.toFixed(1);
-
-
-    /* BATTERY */
-
-    document.getElementById("batteryVoltage")
-        .textContent =
-        state.voltage.toFixed(1) + " V";
-
-
-    document.getElementById("batteryCurrent")
-        .textContent =
-        state.charging
-            ? state.current.toFixed(1) + " A"
-            : "0.0 A";
-
-
-    /* RING */
-
-    const degree =
-        state.soc * 3.6;
-
-
-    document.querySelectorAll(".battery-ring")
-        .forEach(ring => {
-
-            ring.style.background =
-                `conic-gradient(
-                    var(--green) 0deg ${degree}deg,
-                    #e6eeeb ${degree}deg 360deg
-                )`;
-
-        });
-
-
-    /* POWER FLOW */
-
-    document.getElementById("flowPower")
-        .textContent =
-        Math.round(state.power) + " W";
-
-
-    document.getElementById("gridPower")
-        .textContent =
-        Math.round(state.power);
-
-
-    document.getElementById("gridCurrent")
-        .textContent =
-        state.charging
-            ? (state.power / 230).toFixed(2)
-            : "0.00";
-
-
-    /* PAGE BATTERY */
-
-    document.getElementById("batteryPageSoc")
-        .textContent =
-        Math.round(state.soc) + "%";
-
-
-    document.getElementById("batteryPageVoltage")
-        .textContent =
-        state.voltage.toFixed(1) + " V";
-
-
-    document.getElementById("batteryPageCurrent")
-        .textContent =
-        state.charging
-            ? state.current.toFixed(1) + " A"
-            : "0.0 A";
-
-
-    /* PAGE CHARGING */
-
-    document.getElementById("pageVoltage")
-        .textContent =
-        state.voltage.toFixed(1) + " V";
-
-
-    document.getElementById("pageCurrent")
-        .textContent =
-        state.current.toFixed(1) + " A";
-
-
-    /* STATUS */
-
-    const statuses =
-        document.querySelectorAll(
-            "#chargingStatus, #chargingStatusPage"
+        setText(
+            "power",
+            Math.round(systemData.power)
+        );
+
+        setText(
+            "gridPower",
+            Math.round(systemData.power)
         );
 
 
-    statuses.forEach(status => {
+        setText(
+            "healthSOC",
+            Math.round(systemData.soc)
+        );
 
-        if (state.charging) {
+        setText(
+            "healthSOH",
+            Math.round(systemData.soh)
+        );
 
-            status.classList.remove("stopped");
+        setText(
+            "healthTemp",
+            systemData.batteryTemp.toFixed(1)
+        );
 
-            status.classList.add("running");
 
-            status.textContent =
-                "● CHARGING ACTIVE";
+        /* SOC BAR */
 
-        } else {
+        const socBar =
+            document.getElementById("socBar");
 
-            status.classList.remove("running");
+        if (socBar) {
+            socBar.style.width =
+                systemData.soc + "%";
+        }
 
-            status.classList.add("stopped");
 
-            status.textContent =
-                "● CHARGING STOPPED";
+        /* SOH BAR */
+
+        const sohBar =
+            document.getElementById("sohBar");
+
+        if (sohBar) {
+            sohBar.style.width =
+                systemData.soh + "%";
+        }
+
+
+        /* CHARGING STATUS */
+
+        const status =
+            document.getElementById(
+                "dashboardChargingStatus"
+            );
+
+        if (status) {
+
+            if (
+                systemData.charging &&
+                systemData.powerEnabled
+            ) {
+
+                status.textContent =
+                    "● Charging";
+
+            } else {
+
+                status.textContent =
+                    "● Idle";
+            }
+        }
+    }
+
+
+    /* =====================================================
+       SIMULATION UPDATE
+       ===================================================== */
+
+    function simulateData() {
+
+        if (
+            systemData.charging &&
+            systemData.powerEnabled
+        ) {
+
+            systemData.inputVoltage =
+                229.5 +
+                Math.random() * 1.2;
+
+            systemData.outputVoltage =
+                systemData.outputVoltage +
+                (Math.random() - 0.5) * 0.15;
+
+            systemData.outputVoltage =
+                Math.max(
+                    40,
+                    Math.min(
+                        60,
+                        systemData.outputVoltage
+                    )
+                );
+
+
+            systemData.outputCurrent =
+                systemData.outputCurrent +
+                (Math.random() - 0.5) * 0.15;
+
+            systemData.outputCurrent =
+                Math.max(
+                    0,
+                    Math.min(
+                        10,
+                        systemData.outputCurrent
+                    )
+                );
+
+
+            systemData.inputCurrent =
+                (
+                    systemData.power /
+                    systemData.inputVoltage
+                );
+
+
+            systemData.power =
+                systemData.outputVoltage *
+                systemData.outputCurrent;
+
+
+            systemData.batteryTemp +=
+                (Math.random() - 0.5) * 0.15;
+
+
+            systemData.batteryTemp =
+                Math.max(
+                    20,
+                    Math.min(
+                        45,
+                        systemData.batteryTemp
+                    )
+                );
+
+
+            systemData.soc += 0.01;
+
+            if (systemData.soc >= 100) {
+                systemData.soc = 100;
+            }
 
         }
 
-    });
-
-
-    /* FLOW */
-
-    const flowStatus =
-        document.getElementById("flowStatus");
-
-    if (state.charging) {
-
-        flowStatus.textContent =
-            state.mode;
-
-        document
-            .querySelector(".power-flow")
-            .classList.add("charging-active");
-
-        document
-            .getElementById("powerStatus")
-            .textContent =
-            "Charging active";
-
-    } else {
-
-        flowStatus.textContent =
-            "IDLE";
-
-        document
-            .querySelector(".power-flow")
-            .classList.remove("charging-active");
-
-        document
-            .getElementById("powerStatus")
-            .textContent =
-            "System idle";
-
+        updateDashboard();
+        updateChart();
     }
 
 
-    /* SLIDERS */
+    /* =====================================================
+       CHART
+       ===================================================== */
 
-    voltageSlider.value =
-        state.voltage;
+    let electricalChart = null;
 
-    currentSlider.value =
-        state.current;
-
-
-    /* CHART */
-
-    addChartPoint();
-
-}
-
-
-/* =========================================================
-   VOLTAGE CONTROL
-========================================================= */
-
-voltageSlider.addEventListener(
-    "input",
-    function () {
-
-        state.voltage =
-            parseFloat(this.value);
-
-        updateUI();
-
-    }
-);
-
-
-/* PLUS */
-
-document
-    .getElementById("voltagePlus")
-    .addEventListener("click", () => {
-
-        state.voltage =
-            Math.min(
-                60,
-                state.voltage + 0.5
-            );
-
-        updateUI();
-
-        showToast(
-            "Voltage Updated",
-            `Target voltage: ${state.voltage.toFixed(1)} V`
+    const chartCanvas =
+        document.getElementById(
+            "electricalChart"
         );
 
-    });
 
+    const chartLabels = [];
 
-/* MINUS */
+    const voltageInputData = [];
+    const voltageOutputData = [];
 
-document
-    .getElementById("voltageMinus")
-    .addEventListener("click", () => {
+    const currentInputData = [];
+    const currentOutputData = [];
 
-        state.voltage =
-            Math.max(
-                0,
-                state.voltage - 0.5
-            );
 
-        updateUI();
+    function createChart() {
 
-        showToast(
-            "Voltage Updated",
-            `Target voltage: ${state.voltage.toFixed(1)} V`
-        );
+        if (!chartCanvas) return;
 
-    });
+        const ctx =
+            chartCanvas.getContext("2d");
 
 
-/* =========================================================
-   CURRENT CONTROL
-========================================================= */
+        electricalChart =
+            new Chart(ctx, {
 
-currentSlider.addEventListener(
-    "input",
-    function () {
+                type: "line",
 
-        state.current =
-            parseFloat(this.value);
+                data: {
 
-        updateUI();
+                    labels: chartLabels,
 
-    }
-);
+                    datasets: [
 
+                        {
+                            label: "Input Voltage (V)",
 
-/* PLUS */
+                            data:
+                                voltageInputData,
 
-document
-    .getElementById("currentPlus")
-    .addEventListener("click", () => {
+                            borderWidth: 2,
 
-        state.current =
-            Math.min(
-                10,
-                state.current + 0.1
-            );
+                            tension: 0.35,
 
-        updateUI();
+                            yAxisID: "voltage"
+                        },
 
-        showToast(
-            "Current Updated",
-            `Target current: ${state.current.toFixed(1)} A`
-        );
+                        {
+                            label: "Output Voltage (V)",
 
-    });
+                            data:
+                                voltageOutputData,
 
+                            borderWidth: 2,
 
-/* MINUS */
+                            tension: 0.35,
 
-document
-    .getElementById("currentMinus")
-    .addEventListener("click", () => {
+                            yAxisID: "voltage"
+                        },
 
-        state.current =
-            Math.max(
-                0,
-                state.current - 0.1
-            );
+                        {
+                            label: "Input Current (A)",
 
-        updateUI();
+                            data:
+                                currentInputData,
 
-        showToast(
-            "Current Updated",
-            `Target current: ${state.current.toFixed(1)} A`
-        );
+                            borderWidth: 2,
 
-    });
+                            tension: 0.35,
 
+                            yAxisID: "current"
+                        },
 
-/* =========================================================
-   START CHARGING
-========================================================= */
+                        {
+                            label: "Output Current (A)",
 
-function startCharging() {
+                            data:
+                                currentOutputData,
 
-    if (state.current <= 0) {
+                            borderWidth: 2,
 
-        showToast(
-            "Cannot Start",
-            "Set a current greater than 0 A."
-        );
+                            tension: 0.35,
 
-        return;
-    }
+                            yAxisID: "current"
+                        }
 
-
-    if (state.voltage <= 0) {
-
-        showToast(
-            "Cannot Start",
-            "Set a voltage greater than 0 V."
-        );
-
-        return;
-    }
-
-
-    state.charging = true;
-
-
-    updateUI();
-
-
-    showToast(
-        "Charging Started",
-        `${state.mode}: ${state.voltage.toFixed(1)} V / ${state.current.toFixed(1)} A`
-    );
-
-}
-
-
-document
-    .getElementById("startCharging")
-    .addEventListener(
-        "click",
-        startCharging
-    );
-
-
-/* =========================================================
-   STOP CHARGING
-========================================================= */
-
-function stopCharging() {
-
-    state.charging = false;
-
-
-    updateUI();
-
-
-    showToast(
-        "Charging Stopped",
-        "The charging system is now idle."
-    );
-
-}
-
-
-document
-    .getElementById("stopCharging")
-    .addEventListener(
-        "click",
-        stopCharging
-    );
-
-
-/* =========================================================
-   G2V / V2G
-========================================================= */
-
-document
-    .querySelectorAll(".mode-btn")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                document
-                    .querySelectorAll(".mode-btn")
-                    .forEach(btn =>
-                        btn.classList.remove("active")
-                    );
-
-
-                button.classList.add("active");
-
-
-                state.mode =
-                    button.dataset.mode;
-
-
-                updateUI();
-
-
-                showToast(
-                    "Energy Mode Changed",
-                    state.mode === "G2V"
-                        ? "Grid → EV"
-                        : "EV → Grid"
-                );
-
-            }
-        );
-
-    });
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-document
-    .querySelectorAll(".nav-item")
-    .forEach(item => {
-
-        item.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-
-                const page =
-                    item.dataset.page;
-
-
-                /* NAV */
-
-                document
-                    .querySelectorAll(".nav-item")
-                    .forEach(nav =>
-                        nav.classList.remove("active")
-                    );
-
-
-                item.classList.add("active");
-
-
-                /* PAGE */
-
-                document
-                    .querySelectorAll(".page")
-                    .forEach(section =>
-                        section.classList.remove(
-                            "active-page"
-                        )
-                    );
-
-
-                document
-                    .getElementById(page)
-                    .classList.add(
-                        "active-page"
-                    );
-
-
-                /* TITLE */
-
-                const title =
-                    item.textContent.trim();
-
-
-                document
-                    .getElementById("pageTitle")
-                    .textContent =
-                    title;
-
-
-                /* MOBILE */
-
-                document
-                    .querySelector(".sidebar")
-                    .classList.remove("open");
-
-            }
-        );
-
-    });
-
-
-/* =========================================================
-   MOBILE SIDEBAR
-========================================================= */
-
-document
-    .getElementById("mobileMenu")
-    .addEventListener(
-        "click",
-        () => {
-
-            document
-                .querySelector(".sidebar")
-                .classList.toggle("open");
-
-        }
-    );
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-
-function showToast(title, message) {
-
-    const toast =
-        document.getElementById("toast");
-
-
-    document
-        .getElementById("toastTitle")
-        .textContent =
-        title;
-
-
-    document
-        .getElementById("toastMessage")
-        .textContent =
-        message;
-
-
-    toast.classList.add("show");
-
-
-    clearTimeout(toastTimer);
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            3000
-        );
-
-}
-
-
-/* =========================================================
-   POWER CHART
-========================================================= */
-
-const chartLabels = [];
-
-const chartData = [];
-
-
-for (let i = 0; i < 20; i++) {
-
-    chartLabels.push("");
-
-    chartData.push(0);
-
-}
-
-
-const chartCanvas =
-    document.getElementById("powerChart");
-
-
-const powerChart =
-    new Chart(
-        chartCanvas,
-        {
-
-            type: "line",
-
-            data: {
-
-                labels: chartLabels,
-
-                datasets: [
-
-                    {
-
-                        label: "Power",
-
-                        data: chartData,
-
-                        borderColor: "#12a878",
-
-                        backgroundColor:
-                            "rgba(18,168,120,.08)",
-
-                        fill: true,
-
-                        tension: .4,
-
-                        borderWidth: 2,
-
-                        pointRadius: 0
-
-                    }
-
-                ]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-
-                        display: false
-
-                    }
+                    ]
 
                 },
 
-                scales: {
+                options: {
 
-                    x: {
+                    responsive: true,
 
-                        display: false
+                    maintainAspectRatio: false,
+
+                    interaction: {
+                        mode: "index",
+                        intersect: false
+                    },
+
+                    plugins: {
+
+                        legend: {
+                            display: true
+                        }
 
                     },
 
-                    y: {
+                    scales: {
 
-                        beginAtZero: true,
+                        voltage: {
 
-                        grid: {
+                            type: "linear",
 
-                            color: "#edf2f0"
+                            position: "left",
+
+                            title: {
+                                display: true,
+                                text: "Voltage (V)"
+                            }
+
+                        },
+
+                        current: {
+
+                            type: "linear",
+
+                            position: "right",
+
+                            title: {
+                                display: true,
+                                text: "Current (A)"
+                            },
+
+                            grid: {
+                                drawOnChartArea: false
+                            }
 
                         }
 
@@ -752,265 +408,559 @@ const powerChart =
 
                 }
 
-            }
-
-        }
-    );
+            });
+    }
 
 
-function addChartPoint() {
+    function updateChart() {
 
-    chartData.push(
-        Math.round(state.power)
-    );
-
-    chartData.shift();
+        if (!electricalChart) return;
 
 
-    powerChart.update(
-        "none"
-    );
-
-}
-
-
-/* =========================================================
-   ANALYTICS CHART
-========================================================= */
-
-const analyticsCanvas =
-    document.getElementById(
-        "analyticsChart"
-    );
-
-
-const analyticsChart =
-    new Chart(
-        analyticsCanvas,
-        {
-
-            type: "line",
-
-            data: {
-
-                labels: Array(20).fill(""),
-
-                datasets: [
-
-                    {
-
-                        label: "Power",
-
-                        data: Array(20).fill(0),
-
-                        borderColor: "#12a878",
-
-                        backgroundColor:
-                            "rgba(18,168,120,.08)",
-
-                        fill: true,
-
-                        tension: .4,
-
-                        pointRadius: 0
-
-                    }
-
-                ]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-                        display: false
-                    }
-
-                },
-
-                scales: {
-
-                    x: {
-                        display: false
-                    },
-
-                    y: {
-                        beginAtZero: true
-                    }
-
+        const now =
+            new Date().toLocaleTimeString(
+                "en-GB",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
                 }
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   SIMULATION
-========================================================= */
-
-setInterval(
-    () => {
-
-        if (state.charging) {
-
-            /*
-             * Simulated battery charging.
-             */
-
-            state.soc =
-                Math.min(
-                    100,
-                    state.soc + 0.03
-                );
-
-        }
-
-
-        /* Analytics */
-
-        analyticsChart
-            .data
-            .datasets[0]
-            .data
-            .push(
-                Math.round(state.power)
             );
 
 
-        analyticsChart
-            .data
-            .datasets[0]
-            .data
-            .shift();
+        chartLabels.push(now);
 
+        voltageInputData.push(
+            systemData.inputVoltage
+        );
 
-        analyticsChart.update(
-            "none"
+        voltageOutputData.push(
+            systemData.outputVoltage
+        );
+
+        currentInputData.push(
+            systemData.inputCurrent
+        );
+
+        currentOutputData.push(
+            systemData.outputCurrent
         );
 
 
-        updateUI();
+        /* Keep last 20 points */
 
-    },
-    2000
-);
+        if (chartLabels.length > 20) {
 
+            chartLabels.shift();
 
-/* =========================================================
-   SECONDARY CHARGING PAGE CONTROLS
-========================================================= */
+            voltageInputData.shift();
+            voltageOutputData.shift();
 
-
-/* Voltage + */
-
-document
-    .getElementById("pageVoltagePlus")
-    .addEventListener(
-        "click",
-        () => {
-
-            state.voltage =
-                Math.min(
-                    60,
-                    state.voltage + .5
-                );
-
-            updateUI();
-
+            currentInputData.shift();
+            currentOutputData.shift();
         }
+
+
+        electricalChart.update("none");
+    }
+
+
+    createChart();
+
+    updateDashboard();
+
+
+    /* =====================================================
+       INITIAL CHART DATA
+       ===================================================== */
+
+    for (let i = 0; i < 10; i++) {
+
+        updateChart();
+    }
+
+
+    /* =====================================================
+       RUN SIMULATION
+       ===================================================== */
+
+    setInterval(
+        simulateData,
+        2000
     );
 
 
-/* Voltage - */
+    /* =====================================================
+       CHARGING CONTROL
+       ===================================================== */
 
-document
-    .getElementById("pageVoltageMinus")
-    .addEventListener(
-        "click",
-        () => {
+    window.toggleChargingPower =
+        function () {
 
-            state.voltage =
+            systemData.powerEnabled =
+                !systemData.powerEnabled;
+
+
+            const button =
+                document.getElementById(
+                    "powerButton"
+                );
+
+            const text =
+                document.getElementById(
+                    "powerButtonText"
+                );
+
+            const state =
+                document.getElementById(
+                    "powerStateBadge"
+                );
+
+            const indicator =
+                document.getElementById(
+                    "powerIndicator"
+                );
+
+            const powerText =
+                document.getElementById(
+                    "powerText"
+                );
+
+            const powerSubtext =
+                document.getElementById(
+                    "powerSubtext"
+                );
+
+
+            if (systemData.powerEnabled) {
+
+                if (button) {
+                    button.classList.add("on");
+                }
+
+                if (indicator) {
+                    indicator.classList.add("on");
+                }
+
+                if (text) {
+                    text.textContent =
+                        "POWER OFF";
+                }
+
+                if (state) {
+                    state.textContent = "ON";
+                }
+
+                if (powerText) {
+                    powerText.textContent =
+                        "POWER ON";
+                }
+
+                if (powerSubtext) {
+                    powerSubtext.textContent =
+                        "Charging system is enabled";
+                }
+
+            } else {
+
+                systemData.charging = false;
+
+                if (button) {
+                    button.classList.remove("on");
+                }
+
+                if (indicator) {
+                    indicator.classList.remove("on");
+                }
+
+                if (text) {
+                    text.textContent =
+                        "POWER ON";
+                }
+
+                if (state) {
+                    state.textContent = "OFF";
+                }
+
+                if (powerText) {
+                    powerText.textContent =
+                        "POWER OFF";
+                }
+
+                if (powerSubtext) {
+                    powerSubtext.textContent =
+                        "Charging system is disabled";
+                }
+            }
+
+
+            updateChargingPage();
+
+            updateDashboard();
+        };
+
+
+    /* =====================================================
+       START CHARGING
+       ===================================================== */
+
+    window.startCharging =
+        function () {
+
+            if (!systemData.powerEnabled) {
+
+                showToast(
+                    "Turn POWER ON first"
+                );
+
+                return;
+            }
+
+
+            systemData.charging = true;
+
+            updateChargingPage();
+
+            updateDashboard();
+
+            showToast(
+                "✓ Charging started"
+            );
+        };
+
+
+    /* =====================================================
+       STOP CHARGING
+       ===================================================== */
+
+    window.stopCharging =
+        function () {
+
+            systemData.charging = false;
+
+            updateChargingPage();
+
+            updateDashboard();
+
+            showToast(
+                "✓ Charging stopped"
+            );
+        };
+
+
+    /* =====================================================
+       CURRENT CONTROL
+       ===================================================== */
+
+    const currentSlider =
+        document.getElementById(
+            "currentSlider"
+        );
+
+    const chargingCurrent =
+        document.getElementById(
+            "chargingCurrent"
+        );
+
+
+    if (currentSlider) {
+
+        currentSlider.addEventListener(
+            "input",
+            function () {
+
+                const value =
+                    parseFloat(
+                        this.value
+                    );
+
+                if (chargingCurrent) {
+
+                    chargingCurrent.textContent =
+                        value.toFixed(1);
+                }
+            }
+        );
+    }
+
+
+    window.adjustCurrent =
+        function (amount) {
+
+            if (!currentSlider) return;
+
+            let value =
+                parseFloat(
+                    currentSlider.value
+                );
+
+
+            value += amount;
+
+
+            value =
                 Math.max(
                     0,
-                    state.voltage - .5
+                    Math.min(
+                        10,
+                        value
+                    )
                 );
 
-            updateUI();
 
-        }
-    );
+            value =
+                Math.round(
+                    value * 10
+                ) / 10;
 
 
-/* Current + */
+            currentSlider.value =
+                value;
 
-document
-    .getElementById("pageCurrentPlus")
-    .addEventListener(
-        "click",
-        () => {
 
-            state.current =
-                Math.min(
-                    10,
-                    state.current + .1
+            if (chargingCurrent) {
+
+                chargingCurrent.textContent =
+                    value.toFixed(1);
+            }
+        };
+
+
+    window.applyCharging =
+        function () {
+
+            if (!currentSlider) return;
+
+
+            systemData.outputCurrent =
+                parseFloat(
+                    currentSlider.value
                 );
 
-            updateUI();
 
-        }
-    );
+            showToast(
+                "✓ Current setpoint updated to " +
+                systemData.outputCurrent.toFixed(1) +
+                " A"
+            );
 
 
-/* Current - */
+            updateDashboard();
+        };
 
-document
-    .getElementById("pageCurrentMinus")
-    .addEventListener(
-        "click",
-        () => {
 
-            state.current =
+    /* =====================================================
+       VOLTAGE CONTROL
+       ===================================================== */
+
+    const voltageSlider =
+        document.getElementById(
+            "voltageSlider"
+        );
+
+    const voltageSetpoint =
+        document.getElementById(
+            "voltageSetpoint"
+        );
+
+
+    if (voltageSlider) {
+
+        voltageSlider.addEventListener(
+            "input",
+            function () {
+
+                if (voltageSetpoint) {
+
+                    voltageSetpoint.textContent =
+                        parseFloat(
+                            this.value
+                        ).toFixed(1);
+                }
+            }
+        );
+    }
+
+
+    window.adjustVoltage =
+        function (amount) {
+
+            if (!voltageSlider) return;
+
+
+            let value =
+                parseFloat(
+                    voltageSlider.value
+                );
+
+
+            value += amount;
+
+
+            value =
                 Math.max(
-                    0,
-                    state.current - .1
+                    40,
+                    Math.min(
+                        60,
+                        value
+                    )
                 );
 
-            updateUI();
 
+            value =
+                Math.round(
+                    value * 10
+                ) / 10;
+
+
+            voltageSlider.value =
+                value;
+
+
+            if (voltageSetpoint) {
+
+                voltageSetpoint.textContent =
+                    value.toFixed(1);
+            }
+        };
+
+
+    window.applyVoltage =
+        function () {
+
+            if (!voltageSlider) return;
+
+
+            systemData.outputVoltage =
+                parseFloat(
+                    voltageSlider.value
+                );
+
+
+            showToast(
+                "✓ Voltage setpoint updated to " +
+                systemData.outputVoltage.toFixed(1) +
+                " V"
+            );
+
+
+            updateDashboard();
+        };
+
+
+    /* =====================================================
+       CHARGING PAGE UPDATE
+       ===================================================== */
+
+    function updateChargingPage() {
+
+        const badge =
+            document.getElementById(
+                "chargingStateBadge"
+            );
+
+        const statusText =
+            document.getElementById(
+                "statusText"
+            );
+
+        const statusSubtext =
+            document.getElementById(
+                "statusSubtext"
+            );
+
+
+        if (
+            systemData.charging &&
+            systemData.powerEnabled
+        ) {
+
+            if (badge) {
+                badge.textContent =
+                    "CHARGING";
+            }
+
+            if (statusText) {
+                statusText.textContent =
+                    "Charging Active";
+            }
+
+            if (statusSubtext) {
+                statusSubtext.textContent =
+                    "Energy is being delivered to the vehicle";
+            }
+
+        } else {
+
+            if (badge) {
+                badge.textContent =
+                    "IDLE";
+            }
+
+            if (statusText) {
+                statusText.textContent =
+                    "Charging Idle";
+            }
+
+            if (statusSubtext) {
+                statusSubtext.textContent =
+                    "No energy is currently being delivered";
+            }
         }
-    );
 
 
-/* Page start */
+        setText(
+            "chargingVoltage",
+            systemData.outputVoltage.toFixed(1)
+        );
 
-document
-    .getElementById("pageStart")
-    .addEventListener(
-        "click",
-        startCharging
-    );
+        setText(
+            "liveCurrent",
+            systemData.outputCurrent.toFixed(1)
+        );
+
+        setText(
+            "chargingPower",
+            Math.round(systemData.power)
+        );
+
+        setText(
+            "chargingSOC",
+            Math.round(systemData.soc)
+        );
+    }
 
 
-/* Page stop */
+    /* =====================================================
+       TOAST
+       ===================================================== */
 
-document
-    .getElementById("pageStop")
-    .addEventListener(
-        "click",
-        stopCharging
-    );
+    function showToast(message) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+        if (!toast) return;
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+        toast.textContent =
+            message;
 
-updateUI();
+        toast.classList.add("show");
+
+
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+    }
+
+});
