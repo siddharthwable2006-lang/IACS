@@ -527,6 +527,107 @@
 
                 <!-- LIVE PARAMETERS -->
 
+
+<!-- VOLTAGE CONTROL -->
+
+<div class="panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <span class="eyebrow">
+                VOLTAGE SETPOINT
+            </span>
+
+            <h3>
+                Charging Voltage
+            </h3>
+
+        </div>
+
+        <span class="unit-label">
+            40–60 V
+        </span>
+
+    </div>
+
+
+    <div class="charging-value">
+
+        <span id="voltageSetpoint">
+            48.6
+        </span>
+
+        <small>
+            V
+        </small>
+
+    </div>
+
+
+    <input
+        type="range"
+        id="voltageSlider"
+        min="40"
+        max="60"
+        step="0.1"
+        value="48.6"
+    >
+
+
+    <div class="range-labels">
+
+        <span>
+            40 V
+        </span>
+
+        <span>
+            50 V
+        </span>
+
+        <span>
+            60 V
+        </span>
+
+    </div>
+
+
+    <div class="current-adjust">
+
+        <button
+            type="button"
+            id="voltageDecrease"
+            class="secondary-btn"
+        >
+            −
+        </button>
+
+
+        <button
+            type="button"
+            id="applyVoltageButton"
+            class="primary-btn"
+        >
+            APPLY VOLTAGE
+        </button>
+
+
+        <button
+            type="button"
+            id="voltageIncrease"
+            class="secondary-btn"
+        >
+            +
+        </button>
+
+    </div>
+
+</div>
+
+
+
+                
                 <div class="panel">
 
                     <div class="panel-header">
